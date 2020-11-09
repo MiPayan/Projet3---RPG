@@ -7,23 +7,23 @@
 
 import Foundation
 
-/// static var/let --> permet d'utiliser la variable directement sur la class ou struct sans passer par une instance de celle-ci. Clarifie le texte, évite les pavets
+///  var/let --> permet d'utiliser la variable directement sur la class ou struct sans passer par une instance de celle-ci. Clarifie le texte, évite les pavets
 ///guard, permet d'avoir un code plus lisible car il existe dans toute la portée de la fonction
 /// .filter { $0.isDead } ou { $1.isDead }, permet de vérifier les conditions de chaque éléments, pour stocker dans un nouveau tableau(array) et créer une sortie
 
 class InGame {
     
-    static var players: [Player] = []
-    static let maxPlayers = 2
-    static var turns = 1
-    static var playingPlayer: Player {
+    var players: [Player] = []
+    let maxPlayers = 2
+    var turns = 1
+    var playingPlayer: Player {
         players[turns % 2]
     }
-    static var targetPlayer: Player {
+    var targetPlayer: Player {
         players[(turns + 1) % 2]
     }
     
-    static func start() {
+    func start() {
         print("""
             1. New Game
             2. Quit
@@ -42,7 +42,7 @@ class InGame {
         }
     }
     
-    static func createPlayers() {
+    func createPlayers() {
         while players.count < maxPlayers {
             print("Choose name of the player")
             if let name = readLine() {
@@ -58,11 +58,11 @@ class InGame {
         picksCharacterMenu()
     }
     
-    static func picksCharacterMenu() {
+    func picksCharacterMenu() {
         for player in players {
             while player.characterTeam.count < player.maxPicks {
                 print("""
-                    \(player.name) choose \(player.characterTeam) characters:
+                    \(player.name) choose \(player.characterTeam.count) characters:
                     1. Warrior -- 
                     Damage: 20  ||  Lifepoint: 90
                     2. Colossus --
@@ -98,13 +98,13 @@ class InGame {
             
             print("\(player.name) is ready")
         }
-
+        
         print("Let's go to fight!")
         
         fight()
     }
     
-    static func fight() {
+    func fight() {
         var thePlayerLost = false
         while thePlayerLost == false {
             guard let character = playingPlayer.chooseTeamCharacter() else {
@@ -112,17 +112,34 @@ class InGame {
             }
             
             playingPlayer.chooseCharacter = character
-            playingPlayer.chooseTarget()
+            playingPlayer.chooseTarget(targetPlayer: playingPlayer )
             
             if let theCharacter = playingPlayer.chooseCharacter as? Priest {
                 guard let target = playingPlayer.targetChoice else {
                     return
                 }
+                theCharacter.healing(target: target)
+                
+            } else {
+                guard let target = playingPlayer.targetChoice else {
+                    return
+                }
+                character.actionOn(target: target)
+            }
+            playingPlayer.ifThePlayerLost()
+            targetPlayer.ifThePlayerLost()
+        }
+        
+        for player in players {
+            if player.defeat {
+                print("All of your characters are dead.. Sorry but, \(player.name) you lost.")
+                
+                thePlayerLost = true
             }
         }
     }
     
-    static func statistics() {
+    func statistics() {
         let winner = players.filter { !$0.defeat }
         
         print("""
@@ -132,7 +149,7 @@ class InGame {
             """)
     }
     
-    static func leaveTheGame() {
+    func leaveTheGame() {
         print("See you later")
     }
 }

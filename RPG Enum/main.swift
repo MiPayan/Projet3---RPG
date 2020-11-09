@@ -7,6 +7,7 @@
 
 import Foundation
 
-print("Hello, World!")
+let game = InGame.init()
+game.start()
 
-InGame.start()
+

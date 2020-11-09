@@ -11,7 +11,7 @@ class Player {
     
     // MARK: -   
     
-    var name: String
+    let name: String
     /// player name
     var characterTeam: [Character] = []
     /// player team
@@ -89,12 +89,13 @@ class Player {
         // For choose the character to inflige damage at the ennemy or heal an ally
         while true {
             if chooseCharacter == nil {
-                print("\(name), choose a character to fight:")
+                print("\(self.name), choose a character to fight:")
             } else {
-                print("\(name), choose an ally to heal:")
+                print("\(self.name), choose an ally to heal:")
             }
             
             characterDescription(self)
+            
             if let selectCharacter = characterPick(self) {
                 return selectCharacter
                 
@@ -102,7 +103,7 @@ class Player {
         }
     }
     
-    func chooseTarget() {
+    func chooseTarget(targetPlayer: Player) {
         if self.chooseCharacter is Priest {
             guard let target = self.chooseTeamCharacter() else {
                 return
@@ -110,7 +111,7 @@ class Player {
             
             self.targetChoice = target
         } else {
-            guard let target = self.characterAttaking(InGame.targetPlayer) else {
+            guard let target = self.characterAttaking(targetPlayer) else {
                 return
             }
             self.targetChoice = target
@@ -118,9 +119,10 @@ class Player {
     }
     
     private func characterDescription(_ player: Player) {
-        let numberChoice = 1
+        var numberChoice = 1 
         for character in player.characterTeam {
             print("\(numberChoice) \(character.die())")
+            numberChoice += 1
         }
     }
     
@@ -129,6 +131,7 @@ class Player {
             print("Who is the target? Chosen from the team of \(player.name) ")
             
             characterDescription(player)
+            
             if let targetCharacter = characterPick(player) {
                 return targetCharacter
             }
@@ -143,7 +146,7 @@ class Player {
         return true
     }
     
-    private func ifThePlayerLost() {
+    func ifThePlayerLost() {
         let charactersAreDead = characterTeam.filter
         { $0.isDead }
         if charactersAreDead.count == maxPicks {

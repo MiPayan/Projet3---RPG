@@ -9,6 +9,6 @@ import Foundation
 
 class IncantationBook: Weapon {
     init() {
-        super.init(damage: 25, nameWeapon: "Incantation Book")
+        super.init(damage: 25)
     }
 }

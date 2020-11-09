@@ -16,17 +16,17 @@ class Character {
     var lifePoint: Int {
         willSet {
             if newValue > lifePoint {
-                print("\(name) is about to get heal")
+                print("\(self.name) is about to get heal")
             } else {
-                print("\(name) is about to get attack")
+                print("\(self.name) is about to get attack")
             }
         }
         
         didSet {
             if oldValue > lifePoint {
-                print("\(name) lose \(oldValue - lifePoint)HP")
+                print("\(self.name) lose \(oldValue - lifePoint)HP")
             } else {
-                print("\(name) has been healed.. +\(lifePoint - oldValue)")
+                print("\(self.name) has been healed.. +\(lifePoint - oldValue)")
             }
         }
     }
@@ -50,8 +50,8 @@ class Character {
         
     }
     
-    func actionOn(target: Character) {
-        target.lifePoint -= weapon.damage
+    func actionOn(_ target: Character) {
+        target.lifePoint -= self.weapon.damage
         
         if target.lifePoint <= 0 {
             target.isDead = true
