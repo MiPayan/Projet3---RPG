@@ -21,6 +21,7 @@ class Player {
     var targetChoice: Character?
     var defeat = false
     
+    
     init(name: String) {
         self.name = name
     }
@@ -57,7 +58,7 @@ class Player {
         }
     }
     
-    private func characterPick(_ player: Player) -> Character? {
+     func characterPick(_ player: Player) -> Character? {
         if let choose = readLine() {
             guard !choose.isEmpty else {
                 print("You need to choose a character.")
@@ -103,7 +104,7 @@ class Player {
         }
     }
     
-    func chooseTarget(targetPlayer: Player) {
+    func chooseTarget() {
         if self.chooseCharacter is Priest {
             guard let target = self.chooseTeamCharacter() else {
                 return
@@ -118,7 +119,7 @@ class Player {
         }
     }
     
-    private func characterDescription(_ player: Player) {
+    func characterDescription(_ player: Player) {
         var numberChoice = 1 
         for character in player.characterTeam {
             print("\(numberChoice) \(character.die())")
@@ -126,7 +127,7 @@ class Player {
         }
     }
     
-    private func characterAttaking(_ player: Player) -> Character? {
+    func characterAttaking(_ player: Player) -> Character? {
         while true {
             print("Who is the target? Chosen from the team of \(player.name) ")
             
@@ -138,7 +139,7 @@ class Player {
         }
     }
     
-    private func isAlive(_ character: Character) -> Bool { 
+    func isAlive(_ character: Character) -> Bool {
         if character.isDead {
             print("This character is dead.")
             return false
