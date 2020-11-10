@@ -118,13 +118,13 @@ class InGame {
                 guard let target = playingPlayer.targetChoice else {
                     return
                 }
-                theCharacter.healing(target: target)
+                theCharacter.healing(target)
                 
             } else {
                 guard let target = playingPlayer.targetChoice else {
                     return
                 }
-                character.actionOn(target: target)
+                character.actionOn(target)
             }
             playingPlayer.ifThePlayerLost()
             targetPlayer.ifThePlayerLost()
@@ -153,3 +153,4 @@ class InGame {
         print("See you later")
     }
 }
+
