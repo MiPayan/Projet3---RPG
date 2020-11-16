@@ -15,6 +15,8 @@ class InGame {
     
     var players: [Player] = []
     let maxPlayers = 2
+    let chestPercent = 5
+    var bonusChest = 0
     var turns = 1
     var playingPlayer: Player {
         players[turns % 2]
@@ -34,7 +36,7 @@ class InGame {
             case "1":
                 createPlayers()
             case "2":
-                leaveTheGame()
+                exitGame()
             default:
                 print("Try again")
                 start()
@@ -45,60 +47,22 @@ class InGame {
     func createPlayers() {
         while players.count < maxPlayers {
             print("Choose name of the player")
-            if let name = readLine() {
-                if !name.isEmpty {
-                    players.append(Player(name: name))
-                    
-                } else {
-                    print("You need to choose a name")
-                }
+            if let name = readLine(), !name.isEmpty {
+                players.append(Player(name: name))
+            } else {
+                print("You need to choose a name")
             }
         }
         
-        picksCharacterMenu()
+        selectCharacterForEachPlayer()
     }
     
-    func picksCharacterMenu() {
+    func selectCharacterForEachPlayer() {
         for player in players {
-            while player.characterTeam.count < player.maxPicks {
-                print("""
-                    \(player.name) choose \(player.characterTeam.count) characters:
-                    1. Warrior -- 
-                    Damage: 20  ||  Lifepoint: 90
-                    2. Colossus --
-                    Damage: 10  ||  Lifepoint: 110
-                    3. Magus --
-                    Damage: 25  ||  Lifepoint: 70
-                    4. Priest --
-                    Healing: 10  ||  Lifepoint: 90
-                    """)
-                
-                if let picks = readLine() {
-                    if !picks.isEmpty {
-                        switch picks {
-                        case "1":
-                            player.chooseCharacterName(player: player, picks: CharacterType.warrior )
-                        case "2":
-                            player.chooseCharacterName(player: player, picks: CharacterType.colossus)
-                        case "3":
-                            player.chooseCharacterName(player: player, picks: CharacterType.magus)
-                        case "4":
-                            player.chooseCharacterName(player: player, picks: CharacterType.priest)
-                        default:
-                            print("Please, make your choice")
-                        // if the choice is different of 1,2,3 or 4.
-                        }
-                        
-                    } else {
-                        print("You need to choose a character, between 1,2,3 and 4")
-                        // if the choice is empty.
-                    }
-                }
-            }
+            player.selectCharacter()
             
             print("\(player.name) is ready")
         }
-        
         print("Let's go to fight!")
         
         fight()
@@ -107,12 +71,13 @@ class InGame {
     func fight() {
         var thePlayerLost = false
         while thePlayerLost == false {
-            guard let character = playingPlayer.chooseTeamCharacter() else {
+            guard let character = playingPlayer.chooseCharacterTeam() else {
                 return
             }
             
             playingPlayer.chooseCharacter = character
-            playingPlayer.chooseTarget(targetPlayer: playingPlayer )
+            randomChest(playingPlayer.chooseCharacter)
+            chooseTarget(player: playingPlayer)
             
             if let theCharacter = playingPlayer.chooseCharacter as? Priest {
                 guard let target = playingPlayer.targetChoice else {
@@ -128,14 +93,44 @@ class InGame {
             }
             playingPlayer.ifThePlayerLost()
             targetPlayer.ifThePlayerLost()
-        }
-        
-        for player in players {
-            if player.defeat {
-                print("All of your characters are dead.. Sorry but, \(player.name) you lost.")
-                
-                thePlayerLost = true
+            
+            for player in players {
+                if player.defeat {
+                    print("All of your characters are dead.. Sorry but, \(player.name) you lost.")
+                    thePlayerLost = true
+                }
             }
+            turns += 1
+            playingPlayer.chooseCharacter = nil
+            playingPlayer.targetChoice = nil
+        }
+        statistics()
+    }
+    
+    func chooseTarget(player: Player) {
+        if player.chooseCharacter is Priest {
+            guard let target = player.chooseCharacterTeam() else {
+                return
+            }
+            
+            player.targetChoice = target
+        } else {
+            guard let target = player.characterAttaking(targetPlayer) else {
+                return
+            }
+            player.targetChoice = target
+        }
+    }
+    
+    func randomChest(_ character: Character?) {
+        guard arc4random_uniform(100) <= chestPercent else {
+            return
+        }
+        print("A bonus chest appear")
+        
+        bonusChest += 1
+        if let character = playingPlayer.chooseCharacter {
+            character.bonusWeapon()
         }
     }
     
@@ -146,11 +141,16 @@ class InGame {
             THE GAME IS OVER
             The winner is --|  \(winner[0].name)  |--
             The game was finished in \(turns)turns
+            Bonus chest number: \(bonusChest)
             """)
     }
     
-    func leaveTheGame() {
-        print("See you later")
+    func surrender() {
+        statistics()
+    }
+    
+    func exitGame() {
+        print("See you later.")
     }
 }
 

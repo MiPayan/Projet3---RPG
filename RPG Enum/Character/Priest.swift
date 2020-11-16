@@ -15,7 +15,7 @@ class Priest: Character {
     
     
     override func die() -> String {
-        if self .isDead {
+        if isDead {
             return super.die()
         } else {
             return "\(type) \(name) -- \(lifePoint)/\(maxHealt)HP -- \(weapon.damage)heal "

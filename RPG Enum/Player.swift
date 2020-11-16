@@ -29,36 +29,33 @@ class Player {
     // the function allows you  to choose characters
     // player --> player who chose the character
     // picks -->  the choice of the type of characters between warrior, colossus, magus and priest
-    func chooseCharacterName(player: Player, picks: CharacterType) {
+    func chooseCharacterName(picks: CharacterType) {
         while true {
             // a loop for asking the name
             print("Choose \(picks) name:")
-            if let name = readLine() {
-                if characterName.contains(name) {
-                    print("This name is already choosen!")
-                } else if name.isEmpty {
-                    print("")
-                } else {
-                    switch picks {
-                    case .warrior:
-                        player.characterTeam.append(Warrior(name: name))
-                    case .colossus:
-                        player.characterTeam.append(Colossus(name: name))
-                    case .magus:
-                        player.characterTeam.append(Magus(name: name))
-                    case .priest:
-                        player.characterTeam.append(Priest(name: name))
-                    }
-                    print("Your \(picks) \(name) has been added to your team.")
-                    characterName.append(name)
-                    return
-                    
+            if let name = readLine(), characterName.contains(name) {
+                print("This name is already choosen!")
+            } else if name.isEmpty {
+                print("")
+            } else {
+                switch picks {
+                case .warrior:
+                    characterTeam.append(Warrior(name: name))
+                case .colossus:
+                    characterTeam.append(Colossus(name: name))
+                case .magus:
+                    characterTeam.append(Magus(name: name))
+                case .priest:
+                    characterTeam.append(Priest(name: name))
                 }
+                print("Your \(picks) \(name) has been added to your team.")
+                characterName.append(name)
+                return
             }
         }
     }
     
-     func characterPick(_ player: Player) -> Character? {
+    func characterPick(_ player: Player) -> Character? {
         if let choose = readLine() {
             guard !choose.isEmpty else {
                 print("You need to choose a character.")
@@ -86,13 +83,13 @@ class Player {
         return nil
     }
     
-    func chooseTeamCharacter() -> Character? {
+    func chooseCharacterTeam() -> Character? {
         // For choose the character to inflige damage at the ennemy or heal an ally
         while true {
             if chooseCharacter == nil {
-                print("\(self.name), choose a character to fight:")
+                print("\(name), choose a character to fight:")
             } else {
-                print("\(self.name), choose an ally to heal:")
+                print("\(name), choose an ally to heal:")
             }
             
             characterDescription(self)
@@ -101,21 +98,6 @@ class Player {
                 return selectCharacter
                 
             }
-        }
-    }
-    
-    func chooseTarget() {
-        if self.chooseCharacter is Priest {
-            guard let target = self.chooseTeamCharacter() else {
-                return
-            }
-            
-            self.targetChoice = target
-        } else {
-            guard let target = self.characterAttaking(targetPlayer) else {
-                return
-            }
-            self.targetChoice = target
         }
     }
     
@@ -151,7 +133,44 @@ class Player {
         let charactersAreDead = characterTeam.filter
         { $0.isDead }
         if charactersAreDead.count == maxPicks {
-            self.defeat = true
+            defeat = true
+        }
+    }
+    
+    func selectCharacter() {
+        while characterTeam.count < maxPicks {
+            print("""
+                \(name) choose \(characterTeam.count) characters:
+                1. Warrior --
+                Damage: 20  ||  Lifepoint: 90
+                2. Colossus --
+                Damage: 10  ||  Lifepoint: 110
+                3. Magus --
+                Damage: 25  ||  Lifepoint: 70
+                4. Priest --
+                Healing: 10  ||  Lifepoint: 90
+                """)
+            
+            if let picks = readLine(), !picks.isEmpty {
+                    switch picks {
+                    case "1":
+                        chooseCharacterName(picks: CharacterType.warrior )
+                    case "2":
+                        chooseCharacterName(picks: CharacterType.colossus)
+                    case "3":
+                        chooseCharacterName(picks: CharacterType.magus)
+                    case "4":
+                        chooseCharacterName(picks: CharacterType.priest)
+                    default:
+                        print("Please, make your choice")
+                    // if the choice is different of 1,2,3 or 4.
+                    }
+                    
+                } else {
+                    print("You need to choose a character, between 1,2,3 and 4")
+                    // if the choice is empty.
+                
+            }
         }
     }
 }

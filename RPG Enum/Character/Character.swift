@@ -11,22 +11,22 @@ class Character {
     var name: String
     let type: CharacterType
     let maxHealt: Int
-    let weapon: Weapon
+    var weapon: Weapon
     var isDead = false
     var lifePoint: Int {
         willSet {
             if newValue > lifePoint {
-                print("\(self.name) is about to get heal")
+                print("\(name) is about to get heal")
             } else {
-                print("\(self.name) is about to get attack")
+                print("\(name) is about to get attack")
             }
         }
         
         didSet {
             if oldValue > lifePoint {
-                print("\(self.name) lose \(oldValue - lifePoint)HP")
+                print("\(name) lose \(oldValue - lifePoint)HP")
             } else {
-                print("\(self.name) has been healed.. +\(lifePoint - oldValue)")
+                print("\(name) has been healed.. +\(lifePoint - oldValue)")
             }
         }
     }
@@ -51,10 +51,22 @@ class Character {
     }
     
     func actionOn(_ target: Character) {
-        target.lifePoint -= self.weapon.damage
+        target.lifePoint -= weapon.damage
         
         if target.lifePoint <= 0 {
             target.isDead = true
+        }
+    }
+    
+    func bonusWeapon() {
+        if let warrior = self as? Warrior  {
+            warrior.weapon = DoubleSwords()
+        } else if let colossus = self as? Colossus {
+            colossus.weapon = GiantFronde()
+        } else if let magus = self as? Magus {
+            magus.weapon = VoidStaff()
+        } else if let priest = self as? Priest {
+            priest.weapon = TibetanBowl()
         }
     }
 }
