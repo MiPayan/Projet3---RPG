@@ -13,7 +13,7 @@ import Foundation
 
 class InGame {
     
-    var players: [Player] = []
+    var players = [Player]()
     let maxPlayers = 2
     let chestPercent = 5
     var bonusChest = 0
@@ -27,8 +27,8 @@ class InGame {
     
     func start() {
         print("""
-            1. New Game
-            2. Quit
+            1 - 🎮 New Game 🎮 -
+            2 - ❌ Quit ❌ -
             """)
         
         if let line = readLine(){
@@ -38,19 +38,20 @@ class InGame {
             case "2":
                 exitGame()
             default:
-                print("Try again")
+                print("🤞🏼 Try again! 🤞🏼")
                 start()
             }
         }
     }
     
-    func createPlayers() {
+    /// Create the players. 
+    private func createPlayers() {
         while players.count < maxPlayers {
-            print("Choose name of the player")
+            print("Choose name of the player \(players.count + 1):")
             if let name = readLine(), !name.isEmpty {
                 players.append(Player(name: name))
             } else {
-                print("You need to choose a name")
+                print("😡 You need to choose a name! 😡")
             }
         }
         
@@ -61,7 +62,7 @@ class InGame {
         for player in players {
             player.selectCharacter()
             
-            print("\(player.name) is ready")
+            print("✅ \(player.name) is ready! ✅")
         }
         print("Let's go to fight!")
         
@@ -80,13 +81,13 @@ class InGame {
             chooseTarget(player: playingPlayer)
             
             if let theCharacter = playingPlayer.chooseCharacter as? Priest {
-                guard let target = playingPlayer.targetChoice else {
+                guard let target = playingPlayer.targetChosen else {
                     return
                 }
                 theCharacter.healing(target)
                 
             } else {
-                guard let target = playingPlayer.targetChoice else {
+                guard let target = playingPlayer.targetChosen else {
                     return
                 }
                 character.actionOn(target)
@@ -96,13 +97,13 @@ class InGame {
             
             for player in players {
                 if player.defeat {
-                    print("All of your characters are dead.. Sorry but, \(player.name) you lost.")
+                    print("⚰️ All of your characters are dead.. Sorry but, \(player.name) you lost. ⚰️")
                     thePlayerLost = true
                 }
             }
             turns += 1
             playingPlayer.chooseCharacter = nil
-            playingPlayer.targetChoice = nil
+            playingPlayer.targetChosen = nil
         }
         statistics()
     }
@@ -113,20 +114,20 @@ class InGame {
                 return
             }
             
-            player.targetChoice = target
+            player.targetChosen = target
         } else {
-            guard let target = player.characterAttaking(targetPlayer) else {
+            guard let target = player.targetTheEnemyCharacter(targetPlayer) else {
                 return
             }
-            player.targetChoice = target
+            player.targetChosen = target
         }
     }
     
-    func randomChest(_ character: Character?) {
+    private func randomChest(_ character: Character?) {
         guard arc4random_uniform(100) <= chestPercent else {
             return
         }
-        print("A bonus chest appear")
+        print("🎁 A bonus chest appear! 🎁")
         
         bonusChest += 1
         if let character = playingPlayer.chooseCharacter {
@@ -134,23 +135,19 @@ class InGame {
         }
     }
     
-    func statistics() {
+    private func statistics() {
         let winner = players.filter { !$0.defeat }
         
         print("""
-            THE GAME IS OVER
-            The winner is --|  \(winner[0].name)  |--
-            The game was finished in \(turns)turns
-            Bonus chest number: \(bonusChest)
+            ❌ THE GAME IS OVER ❌
+            🥂 The winner is --|  \(winner[0].name)  |-- 🥂
+            ♻️ The game was finished in \(turns)turns ♻️
+            🎁 Bonus chest number: \(bonusChest) 🎁
             """)
     }
     
-    func surrender() {
-        statistics()
-    }
-    
-    func exitGame() {
-        print("See you later.")
+    private func exitGame() {
+        print("See you later. 👋🏼")
     }
 }
 

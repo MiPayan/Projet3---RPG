@@ -9,6 +9,6 @@ import Foundation
 
 class VoidStaff: Weapon {
     init() {
-        super.init(damage: 35)
+        super.init(damage: 35, nameWeapon: "Void Staff")
     }
 }

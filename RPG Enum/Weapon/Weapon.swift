@@ -9,8 +9,10 @@ import Foundation
 
 class Weapon {
     let damage: Int
+    let nameWeapon: String
     
-    init(damage: Int) {
+    init(damage: Int, nameWeapon: String) {
         self.damage = damage
+        self.nameWeapon = nameWeapon
     }
 }

@@ -123,8 +123,8 @@
 				CA56BB2725627CC800182D43 /* GiantFronde.swift */,
 				CA00C09C253D95A000D80F39 /* IncantationBook.swift */,
 				CA56BB1B25626E7900182D43 /* VoidStaff.swift */,
-				CA56BB2F25627D9100182D43 /* TibetanBowl.swift */,
 				CA00C09F253D95B400D80F39 /* HandsNude.swift */,
+				CA56BB2F25627D9100182D43 /* TibetanBowl.swift */,
 			);
 			path = Weapon;
 			sourceTree = "<group>";
@@ -156,7 +156,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1200;
-				LastUpgradeCheck = 1200;
+				LastUpgradeCheck = 1230;
 				TargetAttributes = {
 					CA00C071253D8A9B00D80F39 = {
 						CreatedOnToolsVersion = 12.0.1;
@@ -328,6 +328,7 @@
 		CA00C07A253D8A9B00D80F39 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 78PX5NWF8H;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -339,6 +340,7 @@
 		CA00C07B253D8A9B00D80F39 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 78PX5NWF8H;
 				ENABLE_HARDENED_RUNTIME = YES;

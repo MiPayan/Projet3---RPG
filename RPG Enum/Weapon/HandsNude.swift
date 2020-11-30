@@ -9,6 +9,6 @@ import Foundation
 
 class HandsNude: Weapon {
     init() {
-        super.init(damage: 10)
+        super.init(damage: 10, nameWeapon: "Hands Nude")
     }
 }

@@ -8,7 +8,6 @@
 import Foundation
 
 class Warrior: Character {
-    
     init(name: String) {
         super.init(name: name, type: .warrior, lifePoint: 90, maxHealt: 90, weapon: TwoHendedSword())
     }

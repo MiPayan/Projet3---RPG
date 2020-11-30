@@ -9,6 +9,6 @@ import Foundation
 
 class GiantFronde: Weapon {
     init() {
-        super.init(damage: 20)
+        super.init(damage: 20, nameWeapon: "Giant Fronde")
     }
 }
