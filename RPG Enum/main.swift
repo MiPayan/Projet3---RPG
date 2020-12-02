@@ -7,7 +7,7 @@
 
 import Foundation
 
-let game = InGame.init()
+let game = InGame()
 game.start()
 
 

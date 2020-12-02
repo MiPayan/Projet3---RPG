@@ -9,6 +9,6 @@ import Foundation
 
 class TreeTrunk: Weapon {
     init() {
-        super.init(damage: 10)
+        super.init(damage: 10, nameWeapon: "Tree Trunk")
     }
 }
