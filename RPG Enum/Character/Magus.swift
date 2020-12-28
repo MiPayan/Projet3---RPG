@@ -9,6 +9,6 @@ import Foundation
 
 class Magus: Character {
     init(name: String) {
-        super.init(name: name, type: .magus, lifePoint: 70, maxHealt: 70, weapon: IncantationBook())
+        super.init(name: name, characterType: .magus, lifePoint: 70, maxHealt: 70, weapon: IncantationBook())
     }
 }

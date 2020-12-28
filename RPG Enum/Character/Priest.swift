@@ -9,18 +9,18 @@ import Foundation
 
 class Priest: Character {
     init(name: String) {
-        super.init(name: name, type: .priest, lifePoint: 90, maxHealt: 90, weapon: HandsNude())
+        super.init(name: name, characterType: .priest, lifePoint: 90, maxHealt: 90, weapon: HandsNude())
     }
     
-    override func die() -> String {
+    override func showStatus() -> String {
         if isDead {
-            return super.die()
+            return super.showStatus()
         } else {
-            return "\(type) \(name) -- \(lifePoint)/\(maxHealt)HP -- \(weapon.damage)heal "
+            return "\(characterType) \(name) -- \(lifePoint)/\(maxHealt)HP -- \(weapon.damage)heal "
         }
     }
     
-    func healing(_ target: Character) {
+    override func actionOn(_ target: Character) {
         if target.lifePoint >= target.maxHealt {
             print("Sorry, you are already full life!")
             return
