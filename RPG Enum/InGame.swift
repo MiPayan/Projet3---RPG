@@ -7,7 +7,7 @@
 
 import Foundation
 
-///  var/let --> perme  t d'utiliser la variable directement sur la class ou struct sans passer par une instance de celle-ci. Clarifie le texte, évite les pavets
+///  static --> permet d'utiliser la variable directement sur la class ou struct sans passer par une instance de celle-ci. Clarifie le texte, évite les pavets
 ///guard, permet d'avoir un code plus lisible car il existe dans toute la portée de la fonction
 /// .filter { $0.isDead } ou { $1.isDead }, permet de vérifier les conditions de chaque éléments, pour stocker dans un nouveau tableau(array) et créer une sortie
 
@@ -48,16 +48,31 @@ class InGame {
     private func createPlayers() {
         while players.count < maxPlayers {
             print("Choose name of the player \(players.count + 1):")
-            if let name = readLine(), !name.isEmpty {
-                players.append(Player(name: name))
-            } else {
-                print("😡 You need to choose a name! 😡")
+            if let name = readLine() {
+                if playerNameHasAlreadyChosen(name: name) {
+                    print("This name is already chosen.")
+                } else if name.isEmpty {
+                    print("😡 You must to choose a name! 😡")
+                } else if name != name.trimmingCharacters(in: .whitespacesAndNewlines) {
+                    print("❌ Sorry, the space are not allowed. ❌")
+                } else {
+                    players.append(Player(name: name))
+                }
             }
         }
         selectCharacterForEachPlayer()
     }
     
-    func selectCharacterForEachPlayer() {
+    private func playerNameHasAlreadyChosen(name: String) -> Bool {
+        for player in players {
+            if player.name == name {
+                return true
+            }
+        }
+        return false
+    }
+    
+    private func selectCharacterForEachPlayer() {
         for player in players {
             player.selectCharacter()
             
@@ -68,13 +83,13 @@ class InGame {
         fight()
     }
     
-    func fight() {
+    private func fight() {
         var thePlayerLost = false
         while thePlayerLost == false {
             let fightingCharacter = playingPlayer.selectCharacterForHealingOrFighting()
             
             randomChest(fightingCharacter: fightingCharacter)
-            let targetCharacter = chooseTarget(player: playingPlayer, fightingCharacter: fightingCharacter)
+            let targetCharacter = chooseTarget(fightingCharacter: fightingCharacter)
             
             fightingCharacter.actionOn(targetCharacter)
             
@@ -87,26 +102,18 @@ class InGame {
                     thePlayerLost = true
                 }
             }
-            //            playingPlayer.targetChosen = nil
             turns += 1
         }
         statistics()
     }
     
-    func chooseTarget(player: Player, fightingCharacter: Character) -> Character {
+    private func chooseTarget(fightingCharacter: Character) -> Character {
         if fightingCharacter is Priest {
-            let characterToHeal = playingPlayer.selectCharacterForHealingOrFighting()
-            
-            //            player.targetChosen = characterToHeal
-            //            player.selectCharacter()
+            let characterToHeal = playingPlayer.selectAllyToHealOrEnemyToAttack(character: fightingCharacter)
             return characterToHeal
-            
         } else {
-            let targetEnemy = player.targetTheEnemyCharacter(targetPlayer)
-            
-            //            player.targetChosen = target
-            //            player.selectCharacter()
-            return targetEnemy
+            let characterToTarget = targetPlayer.selectAllyToHealOrEnemyToAttack(character: fightingCharacter)
+            return characterToTarget
         }
     }
     
@@ -115,13 +122,13 @@ class InGame {
             return
         }
         if fightingCharacter is Warrior, hasAlreadyBonus(player: playingPlayer, weapon: DoubleSwords()) {
-            print("Sorry, you already have a bonus.")
+            return
         } else if fightingCharacter is Colossus, hasAlreadyBonus(player: playingPlayer, weapon: GiantFronde()) {
-            print("Sorry, you already have a bonus.")
+            return
         } else if fightingCharacter is Magus, hasAlreadyBonus(player: playingPlayer, weapon: VoidStaff()) {
-            print("Sorry, you already have a bonus.")
+            return
         } else if fightingCharacter is Priest, hasAlreadyBonus(player: playingPlayer, weapon: VoidStaff()) {
-            print("Sorry, you already have a bonus.")
+            return
         } else {
             bonusChest += 1
             fightingCharacter.bonusWeapon()

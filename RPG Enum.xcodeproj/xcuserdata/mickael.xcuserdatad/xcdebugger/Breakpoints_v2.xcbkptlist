@@ -7,48 +7,32 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "48574A02-2CF8-4CBE-90F5-EED955CCEE05"
+            uuid = "F9F2375D-14D2-4E0D-9DA0-8866B1B0B699"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RPG Enum/Player/Player.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "193"
-            endingLineNumber = "193"
-            landmarkName = "targetTheEnemyCharacter(_:)"
+            startingLineNumber = "201"
+            endingLineNumber = "201"
+            landmarkName = "selectAllyToHealOrEnemyToAttack(character:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "D1A01B1B-8FE8-496A-A9E5-EC82BC38F21A"
+            uuid = "95333000-DB00-4C4C-9B20-8DA102E5E3FF"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "RPG Enum/Player/Player.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "196"
-            endingLineNumber = "196"
-            landmarkName = "targetTheEnemyCharacter(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "A808F894-FB61-437D-89FE-FB321F47C36F"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "RPG Enum/Player/Player.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "197"
-            endingLineNumber = "197"
-            landmarkName = "targetTheEnemyCharacter(_:)"
+            startingLineNumber = "209"
+            endingLineNumber = "209"
+            landmarkName = "selectAllyToHealOrEnemyToAttack(character:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

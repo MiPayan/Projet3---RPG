@@ -22,13 +22,11 @@ class Priest: Character {
     
     override func actionOn(_ target: Character) {
         if target.lifePoint >= target.maxHealt {
-            print("Sorry, you are already full life!")
-            return
-        }
-        target.lifePoint += weapon.damage
-        
-        if target.lifePoint > target.maxHealt {
+            print("Sorry, you are already full life.")
+        } else if target.lifePoint + weapon.damage > target.maxHealt {
             target.lifePoint = target.maxHealt
+        } else {
+            target.lifePoint += weapon.damage
         }
     }
 }

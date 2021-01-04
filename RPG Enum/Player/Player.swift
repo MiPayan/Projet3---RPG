@@ -14,8 +14,6 @@ class Player {
     let name: String
     var characters = [Character]()
     let maxPicks = 3
-//    var fightingCharacter: Character?
-//    var targetChosen: Character?
     var defeat = false
     
     init(name: String) {
@@ -23,11 +21,15 @@ class Player {
     }
     
     /// To choose the unique name of a single character. The name of the chosen character is "A", the name of another character cannot be "A". Must be different.
-    func chooseCharacterName(_ picks: CharacterType) {
+    private func chooseCharacterName(_ picks: CharacterType) {
         print("Choose \(picks) name:")
         if let name = readLine() {
             if isCharacterNameAlreadyChosen(name: name) {
                 print("This name is already choosen!")
+            } else if name.isEmpty {
+                print("😡 You need to choose a name for your character! 😡")
+            } else if name != name.trimmingCharacters(in: .whitespacesAndNewlines) {
+                print("         , attack! Really.. your character needs a name other than a space. 🙄")
             } else {
                 switch picks {
                 case .warrior:
@@ -44,7 +46,7 @@ class Player {
         }
     }
     
-    func isCharacterNameAlreadyChosen(name: String) -> Bool {
+    private func isCharacterNameAlreadyChosen(name: String) -> Bool {
         for character in characters {
             if character.name == name {
                 return true
@@ -53,30 +55,30 @@ class Player {
         return false
     }
     
-    func characterPick() -> Character? {
+    private func characterPick() -> Character? {
         if let choose = readLine() {
             guard !choose.isEmpty else {
                 print("You need to choose a character.")
                 return characterPick()
             }
-
+            
             guard let numberChoose = Int(choose) else {
                 print("Impossible choice!")
                 return characterPick()
             }
-
+            
             guard numberChoose <= maxPicks, numberChoose > 0 else {
                 print("You only have \(maxPicks) characters")
                 return characterPick()
             }
-
+            
             guard isAlive(characters[numberChoose - 1]) else {
                 print("You need to choose a character")
                 return characterPick()
             }
             return characters[numberChoose - 1]
         }
-
+        
         print("I can't ask for your choice..")
         return characterPick()
     }
@@ -190,16 +192,37 @@ class Player {
     }
     
     /// Choice of the target to attack between the three characters enemy.
-    func targetTheEnemyCharacter(_ player: Player) -> Character {
-        print("🎯 Who is the target? Chosen from the team of \(player.name). 🎯")
-        
-        player.characterDescription()
-        
-        if let targetCharacter = player.characterPick() {
-            return targetCharacter
+    func selectAllyToHealOrEnemyToAttack(character: Character) -> Character {
+        if character is Priest {
+            print("🎯 \(name), which ally needs heal? 🎯")
+            
+            characterDescription()
+            
+            if let targetTheAllyCharacter = characterPick() {
+                return targetTheAllyCharacter
+            }
+        } else {
+            print("🎯 Who is the target? Chosen from the team of \(name). 🎯")
+            
+            characterDescription()
+            
+            if let targetTheEnemyCharacter = characterPick() {
+                return targetTheEnemyCharacter
+            }
         }
-        return targetTheEnemyCharacter(player)
+        return selectAllyToHealOrEnemyToAttack(character: character)
     }
+    
+    //    func targetAllyToHeal() -> Character {
+    //        print("🎯 Which ally needs heal? 🎯")
+    //
+    //        characterDescription()
+    //
+    //        if let targetCharacter = characterPick() {
+    //            return targetCharacter
+    //        }
+    //        return targetAllyToHeal()
+    //    }
     
     /// To check if character is dead.
     private func isAlive(_ character: Character) -> Bool {

@@ -21,7 +21,6 @@
 		CA00C0A0253D95B400D80F39 /* HandsNude.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA00C09F253D95B400D80F39 /* HandsNude.swift */; };
 		CA00C0A3253D971800D80F39 /* InGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA00C0A2253D971800D80F39 /* InGame.swift */; };
 		CA00C0A6253D978400D80F39 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA00C0A5253D978400D80F39 /* Player.swift */; };
-		CA2E83A7258BD86C0061D6F4 /* PowerGain.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA2E83A6258BD86C0061D6F4 /* PowerGain.swift */; };
 		CA56BB1C25626E7900182D43 /* VoidStaff.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA56BB1B25626E7900182D43 /* VoidStaff.swift */; };
 		CA56BB25256270F200182D43 /* DoubleSwords.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA56BB24256270F200182D43 /* DoubleSwords.swift */; };
 		CA56BB2825627CC800182D43 /* GiantFronde.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA56BB2725627CC800182D43 /* GiantFronde.swift */; };
@@ -56,7 +55,6 @@
 		CA00C09F253D95B400D80F39 /* HandsNude.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandsNude.swift; sourceTree = "<group>"; };
 		CA00C0A2253D971800D80F39 /* InGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InGame.swift; sourceTree = "<group>"; };
 		CA00C0A5253D978400D80F39 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
-		CA2E83A6258BD86C0061D6F4 /* PowerGain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PowerGain.swift; sourceTree = "<group>"; };
 		CA56BB1B25626E7900182D43 /* VoidStaff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoidStaff.swift; sourceTree = "<group>"; };
 		CA56BB24256270F200182D43 /* DoubleSwords.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoubleSwords.swift; sourceTree = "<group>"; };
 		CA56BB2725627CC800182D43 /* GiantFronde.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiantFronde.swift; sourceTree = "<group>"; };
@@ -127,7 +125,6 @@
 				CA56BB1B25626E7900182D43 /* VoidStaff.swift */,
 				CA00C09F253D95B400D80F39 /* HandsNude.swift */,
 				CA56BB2F25627D9100182D43 /* TibetanBowl.swift */,
-				CA2E83A6258BD86C0061D6F4 /* PowerGain.swift */,
 			);
 			path = Weapon;
 			sourceTree = "<group>";
@@ -215,7 +212,6 @@
 				CA00C094253D93C500D80F39 /* Priest.swift in Sources */,
 				CA00C09D253D95A000D80F39 /* IncantationBook.swift in Sources */,
 				CA00C07F253D8CBA00D80F39 /* CharacterType.swift in Sources */,
-				CA2E83A7258BD86C0061D6F4 /* PowerGain.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

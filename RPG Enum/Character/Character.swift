@@ -38,7 +38,7 @@ class Character {
         self.maxHealt = maxHealt
         self.weapon = weapon
     }
-   
+    
     func showStatus() -> String {
         if isDead {
             return "\(characterType) \(name) is dead in the fight"
@@ -54,7 +54,7 @@ class Character {
             target.isDead = true
         }
     }
-        
+    
     func bonusWeapon() {
         if let warrior = self as? Warrior  {
             warrior.weapon = DoubleSwords()
