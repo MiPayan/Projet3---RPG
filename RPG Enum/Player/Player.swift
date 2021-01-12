@@ -14,7 +14,6 @@ class Player {
     let name: String
     var characters = [Character]()
     let maxPicks = 3
-    var defeat = false
     
     init(name: String) {
         self.name = name
@@ -29,7 +28,7 @@ class Player {
             } else if name.isEmpty {
                 print("😡 You need to choose a name for your character! 😡")
             } else if name != name.trimmingCharacters(in: .whitespacesAndNewlines) {
-                print("         , attack! Really.. your character needs a name other than a space. 🙄")
+                print(" Your character needs a name without spaces. 🙄")
             } else {
                 switch picks {
                 case .warrior:
@@ -85,9 +84,10 @@ class Player {
     
     /// To select the characters
     func selectCharacter() {
+        print(" ⚠️ The same character cannot be selected more than once. Select your character by entering 1, 2, 3 or 4 and choose a name for him. Maximum of three characters per team. ⚠️")
         while characters.count < maxPicks {
             print("""
-                \(name) choose \(3 - characters.count) character:
+                \(name), you must choose \(3 - characters.count) character:
                 1 - ⚔️ Warrior ⚔️ - Simple, basic but efficient.
                 Damage: 20  ||  Lifepoint: 90
                 2 - 💪🏼 Colossus 💪🏼 - Thick smelly creature, can't even see his feet.
@@ -195,38 +195,20 @@ class Player {
     func selectAllyToHealOrEnemyToAttack(character: Character) -> Character {
         if character is Priest {
             print("🎯 \(name), which ally needs heal? 🎯")
-            
-            characterDescription()
-            
-            if let targetTheAllyCharacter = characterPick() {
-                return targetTheAllyCharacter
-            }
         } else {
             print("🎯 Who is the target? Chosen from the team of \(name). 🎯")
-            
-            characterDescription()
-            
-            if let targetTheEnemyCharacter = characterPick() {
-                return targetTheEnemyCharacter
-            }
+        }
+        characterDescription()
+        
+        if let targetTheAllyCharacter = characterPick() {
+            return targetTheAllyCharacter
         }
         return selectAllyToHealOrEnemyToAttack(character: character)
     }
     
-    //    func targetAllyToHeal() -> Character {
-    //        print("🎯 Which ally needs heal? 🎯")
-    //
-    //        characterDescription()
-    //
-    //        if let targetCharacter = characterPick() {
-    //            return targetCharacter
-    //        }
-    //        return targetAllyToHeal()
-    //    }
-    
     /// To check if character is dead.
     private func isAlive(_ character: Character) -> Bool {
-        if character.isDead {
+        if character.isDead() {
             print("This character is dead. 💀")
             return false
         }
@@ -234,11 +216,11 @@ class Player {
     }
     
     /// To check if all of the characters of team are dead. The player lost, else, the game continues.
-    func ifThePlayerLost() {
-        let charactersAreDead = characters.filter
-        { $0.isDead }
+    func isDefeat() -> Bool {
+        let charactersAreDead = characters.filter { $0.isDead() }
         if charactersAreDead.count == maxPicks {
-            defeat = true
+            return true
         }
+        return false
     }
 }

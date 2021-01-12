@@ -13,18 +13,18 @@ class Priest: Character {
     }
     
     override func showStatus() -> String {
-        if isDead {
+        if isDead() {
             return super.showStatus()
         } else {
-            return "\(characterType) \(name) -- \(lifePoint)/\(maxHealt)HP -- \(weapon.damage)heal "
+            return "\(characterType) \(name) -- \(lifePoint)/\(maxHealth)HP -- \(weapon.damage)heal "
         }
     }
     
     override func actionOn(_ target: Character) {
-        if target.lifePoint >= target.maxHealt {
+        if target.lifePoint >= target.maxHealth {
             print("Sorry, you are already full life.")
-        } else if target.lifePoint + weapon.damage > target.maxHealt {
-            target.lifePoint = target.maxHealt
+        } else if target.lifePoint + weapon.damage > target.maxHealth {
+            target.lifePoint = target.maxHealth
         } else {
             target.lifePoint += weapon.damage
         }

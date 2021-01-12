@@ -7,16 +7,12 @@
 
 import Foundation
 
-///  static --> permet d'utiliser la variable directement sur la class ou struct sans passer par une instance de celle-ci. Clarifie le texte, évite les pavets
-///guard, permet d'avoir un code plus lisible car il existe dans toute la portée de la fonction
-/// .filter { $0.isDead } ou { $1.isDead }, permet de vérifier les conditions de chaque éléments, pour stocker dans un nouveau tableau(array) et créer une sortie
-
 class InGame {
     
     var players = [Player]()
     let maxPlayers = 2
+    var bonus = 0
     let percentageBonusChest = 5
-    var bonusChest = 0
     var turns = 1
     var playingPlayer: Player {
         players[turns % 2]
@@ -27,6 +23,7 @@ class InGame {
     
     func start() {
         print("""
+            Hi! What do you want to do? (For make your choice, enter 1 or 2)
             1 - 🎮 New Game 🎮 -
             2 - ❌ Quit ❌ -
             """)
@@ -78,43 +75,31 @@ class InGame {
             
             print("✅ \(player.name) is ready! ✅")
         }
+        print("⚠️ How to play? Same as character selection. Select your character to attack or heal, and after, select your target. ⚠️")
         print("Let's go to fight!")
         
         fight()
     }
     
     private func fight() {
-        var thePlayerLost = false
-        while thePlayerLost == false {
-            let fightingCharacter = playingPlayer.selectCharacterForHealingOrFighting()
-            
-            randomChest(fightingCharacter: fightingCharacter)
-            let targetCharacter = chooseTarget(fightingCharacter: fightingCharacter)
-            
-            fightingCharacter.actionOn(targetCharacter)
-            
-            playingPlayer.ifThePlayerLost()
-            targetPlayer.ifThePlayerLost()
-            
-            for player in players {
-                if player.defeat {
-                    print("⚰️ All of your characters are dead.. Sorry but, \(player.name) you lost. ⚰️")
-                    thePlayerLost = true
-                }
-            }
+        let fightingCharacter = playingPlayer.selectCharacterForHealingOrFighting()
+        randomChest(fightingCharacter: fightingCharacter)
+        
+        let targetCharacter = chooseTarget(fightingCharacter: fightingCharacter)
+        fightingCharacter.actionOn(targetCharacter)
+        
+        if targetPlayer.isDefeat() {
+            print("⚰️ All of your characters are dead.. Sorry, \(targetPlayer.name) you lost. ⚰️")
+            statistics()
+        } else {
             turns += 1
+            return fight()
         }
-        statistics()
     }
     
     private func chooseTarget(fightingCharacter: Character) -> Character {
-        if fightingCharacter is Priest {
-            let characterToHeal = playingPlayer.selectAllyToHealOrEnemyToAttack(character: fightingCharacter)
-            return characterToHeal
-        } else {
-            let characterToTarget = targetPlayer.selectAllyToHealOrEnemyToAttack(character: fightingCharacter)
-            return characterToTarget
-        }
+        let player = fightingCharacter is Priest ? playingPlayer : targetPlayer
+        return player.selectAllyToHealOrEnemyToAttack(character: fightingCharacter)
     }
     
     private func randomChest(fightingCharacter: Character) {
@@ -130,7 +115,7 @@ class InGame {
         } else if fightingCharacter is Priest, hasAlreadyBonus(player: playingPlayer, weapon: VoidStaff()) {
             return
         } else {
-            bonusChest += 1
+            bonus += 1
             fightingCharacter.bonusWeapon()
         }
     }
@@ -145,13 +130,13 @@ class InGame {
     }
     
     private func statistics() {
-        let winner = players.filter { !$0.defeat }
+        let winner = players.filter { !$0.isDefeat() }
         
         print("""
             ❌ THE GAME IS OVER ❌
             🥂 The winner is --|  \(winner[0].name)  |-- 🥂
             ♻️ The game was finished in \(turns)turns ♻️
-            🎁 Bonus chest number: \(bonusChest) 🎁
+            🎁 Bonus number: \(bonus) 🎁
             """)
     }
     

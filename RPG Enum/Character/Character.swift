@@ -10,9 +10,8 @@ import Foundation
 class Character {
     var name: String
     let characterType: CharacterType
-    let maxHealt: Int
+    let maxHealth: Int
     var weapon: Weapon
-    var isDead = false
     var lifePoint: Int {
         willSet {
             if newValue > lifePoint {
@@ -35,24 +34,30 @@ class Character {
         self.name = name
         self.characterType = characterType
         self.lifePoint = lifePoint
-        self.maxHealt = maxHealt
+        self.maxHealth = maxHealt
         self.weapon = weapon
     }
     
     func showStatus() -> String {
-        if isDead {
+        if isDead() {
             return "\(characterType) \(name) is dead in the fight"
         } else {
-            return "\(characterType) \(name) -- \(lifePoint)/\(maxHealt)HP -- \(weapon.damage)DMG "
+            return "\(characterType) \(name) -- \(lifePoint)/\(maxHealth)HP -- \(weapon.damage)DMG "
         }
     }
     
     func actionOn(_ target: Character) {
-        target.lifePoint -= weapon.damage
-        
-        if target.lifePoint <= 0 {
-            target.isDead = true
+        if !isDead() {
+            target.lifePoint -= weapon.damage
         }
+        return
+    }
+    
+    func isDead() -> Bool {
+        if lifePoint <= 0 {
+            return true
+        }
+        return false
     }
     
     func bonusWeapon() {
