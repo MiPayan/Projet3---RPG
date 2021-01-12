@@ -7,14 +7,12 @@
 
 import Foundation
 
-///  var/let --> permet d'utiliser la variable directement sur la class ou struct sans passer par une instance de celle-ci. Clarifie le texte, évite les pavets
-///guard, permet d'avoir un code plus lisible car il existe dans toute la portée de la fonction
-/// .filter { $0.isDead } ou { $1.isDead }, permet de vérifier les conditions de chaque éléments, pour stocker dans un nouveau tableau(array) et créer une sortie
-
 class InGame {
     
-    var players: [Player] = []
+    var players = [Player]()
     let maxPlayers = 2
+    var bonus = 0
+    let percentageBonusChest = 5
     var turns = 1
     var playingPlayer: Player {
         players[turns % 2]
@@ -25,8 +23,9 @@ class InGame {
     
     func start() {
         print("""
-            1. New Game
-            2. Quit
+            Hi! What do you want to do? (For make your choice, enter 1 or 2)
+            1 - 🎮 New Game 🎮 -
+            2 - ❌ Quit ❌ -
             """)
         
         if let line = readLine(){
@@ -34,123 +33,114 @@ class InGame {
             case "1":
                 createPlayers()
             case "2":
-                leaveTheGame()
+                exitGame()
             default:
-                print("Try again")
+                print("🤞🏼 Try again! 🤞🏼")
                 start()
             }
         }
     }
     
-    func createPlayers() {
+    /// Create the players. 
+    private func createPlayers() {
         while players.count < maxPlayers {
-            print("Choose name of the player")
+            print("Choose name of the player \(players.count + 1):")
             if let name = readLine() {
-                if !name.isEmpty {
-                    players.append(Player(name: name))
-                    
+                if playerNameHasAlreadyChosen(name: name) {
+                    print("This name is already chosen.")
+                } else if name.isEmpty {
+                    print("😡 You must to choose a name! 😡")
+                } else if name != name.trimmingCharacters(in: .whitespacesAndNewlines) {
+                    print("❌ Sorry, the space are not allowed. ❌")
                 } else {
-                    print("You need to choose a name")
+                    players.append(Player(name: name))
                 }
             }
         }
-        
-        picksCharacterMenu()
+        selectCharacterForEachPlayer()
     }
     
-    func picksCharacterMenu() {
+    private func playerNameHasAlreadyChosen(name: String) -> Bool {
         for player in players {
-            while player.characterTeam.count < player.maxPicks {
-                print("""
-                    \(player.name) choose \(player.characterTeam.count) characters:
-                    1. Warrior -- 
-                    Damage: 20  ||  Lifepoint: 90
-                    2. Colossus --
-                    Damage: 10  ||  Lifepoint: 110
-                    3. Magus --
-                    Damage: 25  ||  Lifepoint: 70
-                    4. Priest --
-                    Healing: 10  ||  Lifepoint: 90
-                    """)
-                
-                if let picks = readLine() {
-                    if !picks.isEmpty {
-                        switch picks {
-                        case "1":
-                            player.chooseCharacterName(player: player, picks: CharacterType.warrior )
-                        case "2":
-                            player.chooseCharacterName(player: player, picks: CharacterType.colossus)
-                        case "3":
-                            player.chooseCharacterName(player: player, picks: CharacterType.magus)
-                        case "4":
-                            player.chooseCharacterName(player: player, picks: CharacterType.priest)
-                        default:
-                            print("Please, make your choice")
-                        // if the choice is different of 1,2,3 or 4.
-                        }
-                        
-                    } else {
-                        print("You need to choose a character, between 1,2,3 and 4")
-                        // if the choice is empty.
-                    }
-                }
+            if player.name == name {
+                return true
             }
-            
-            print("\(player.name) is ready")
         }
-        
+        return false
+    }
+    
+    private func selectCharacterForEachPlayer() {
+        for player in players {
+            player.selectCharacter()
+            
+            print("✅ \(player.name) is ready! ✅")
+        }
+        print("⚠️ How to play? Same as character selection. Select your character to attack or heal, and after, select your target. ⚠️")
         print("Let's go to fight!")
         
         fight()
     }
     
-    func fight() {
-        var thePlayerLost = false
-        while thePlayerLost == false {
-            guard let character = playingPlayer.chooseTeamCharacter() else {
-                return
-            }
-            
-            playingPlayer.chooseCharacter = character
-            playingPlayer.chooseTarget(targetPlayer: playingPlayer )
-            
-            if let theCharacter = playingPlayer.chooseCharacter as? Priest {
-                guard let target = playingPlayer.targetChoice else {
-                    return
-                }
-                theCharacter.healing(target)
-                
-            } else {
-                guard let target = playingPlayer.targetChoice else {
-                    return
-                }
-                character.actionOn(target)
-            }
-            playingPlayer.ifThePlayerLost()
-            targetPlayer.ifThePlayerLost()
-        }
+    private func fight() {
+        let fightingCharacter = playingPlayer.selectCharacterForHealingOrFighting()
+        randomChest(fightingCharacter: fightingCharacter)
         
-        for player in players {
-            if player.defeat {
-                print("All of your characters are dead.. Sorry but, \(player.name) you lost.")
-                
-                thePlayerLost = true
-            }
+        let targetCharacter = chooseTarget(fightingCharacter: fightingCharacter)
+        fightingCharacter.actionOn(targetCharacter)
+        
+        if targetPlayer.isDefeat() {
+            print("⚰️ All of your characters are dead.. Sorry, \(targetPlayer.name) you lost. ⚰️")
+            statistics()
+        } else {
+            turns += 1
+            return fight()
         }
     }
     
-    func statistics() {
-        let winner = players.filter { !$0.defeat }
+    private func chooseTarget(fightingCharacter: Character) -> Character {
+        let player = fightingCharacter is Priest ? playingPlayer : targetPlayer
+        return player.selectAllyToHealOrEnemyToAttack(character: fightingCharacter)
+    }
+    
+    private func randomChest(fightingCharacter: Character) {
+        guard arc4random_uniform(100) <= percentageBonusChest else {
+            return
+        }
+        if fightingCharacter is Warrior, hasAlreadyBonus(player: playingPlayer, weapon: DoubleSwords()) {
+            return
+        } else if fightingCharacter is Colossus, hasAlreadyBonus(player: playingPlayer, weapon: GiantFronde()) {
+            return
+        } else if fightingCharacter is Magus, hasAlreadyBonus(player: playingPlayer, weapon: VoidStaff()) {
+            return
+        } else if fightingCharacter is Priest, hasAlreadyBonus(player: playingPlayer, weapon: VoidStaff()) {
+            return
+        } else {
+            bonus += 1
+            fightingCharacter.bonusWeapon()
+        }
+    }
+    
+    private func hasAlreadyBonus(player: Player, weapon: Weapon) -> Bool {
+        for bonus in player.characters {
+            if bonus.weapon.name == weapon.name {
+                return true
+            }
+        }
+        return false
+    }
+    
+    private func statistics() {
+        let winner = players.filter { !$0.isDefeat() }
         
         print("""
-            THE GAME IS OVER
-            The winner is --|  \(winner[0].name)  |--
-            The game was finished in \(turns)turns
+            ❌ THE GAME IS OVER ❌
+            🥂 The winner is --|  \(winner[0].name)  |-- 🥂
+            ♻️ The game was finished in \(turns)turns ♻️
+            🎁 Bonus number: \(bonus) 🎁
             """)
     }
     
-    func leaveTheGame() {
-        print("See you later")
+    private func exitGame() {
+        print("See you later. 👋🏼")
     }
 }
-

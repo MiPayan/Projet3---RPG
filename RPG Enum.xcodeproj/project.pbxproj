@@ -21,6 +21,10 @@
 		CA00C0A0253D95B400D80F39 /* HandsNude.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA00C09F253D95B400D80F39 /* HandsNude.swift */; };
 		CA00C0A3253D971800D80F39 /* InGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA00C0A2253D971800D80F39 /* InGame.swift */; };
 		CA00C0A6253D978400D80F39 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA00C0A5253D978400D80F39 /* Player.swift */; };
+		CA56BB1C25626E7900182D43 /* VoidStaff.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA56BB1B25626E7900182D43 /* VoidStaff.swift */; };
+		CA56BB25256270F200182D43 /* DoubleSwords.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA56BB24256270F200182D43 /* DoubleSwords.swift */; };
+		CA56BB2825627CC800182D43 /* GiantFronde.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA56BB2725627CC800182D43 /* GiantFronde.swift */; };
+		CA56BB3025627D9100182D43 /* TibetanBowl.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA56BB2F25627D9100182D43 /* TibetanBowl.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -51,6 +55,10 @@
 		CA00C09F253D95B400D80F39 /* HandsNude.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandsNude.swift; sourceTree = "<group>"; };
 		CA00C0A2253D971800D80F39 /* InGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InGame.swift; sourceTree = "<group>"; };
 		CA00C0A5253D978400D80F39 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
+		CA56BB1B25626E7900182D43 /* VoidStaff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoidStaff.swift; sourceTree = "<group>"; };
+		CA56BB24256270F200182D43 /* DoubleSwords.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoubleSwords.swift; sourceTree = "<group>"; };
+		CA56BB2725627CC800182D43 /* GiantFronde.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GiantFronde.swift; sourceTree = "<group>"; };
+		CA56BB2F25627D9100182D43 /* TibetanBowl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TibetanBowl.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,8 +92,8 @@
 			isa = PBXGroup;
 			children = (
 				CA00C0A2253D971800D80F39 /* InGame.swift */,
-				CA00C0A5253D978400D80F39 /* Player.swift */,
 				CA00C075253D8A9B00D80F39 /* main.swift */,
+				CAD1721F25762BD7005E4E58 /* Player */,
 				CA00C085253D8D5C00D80F39 /* Weapon */,
 				CA00C07D253D8C2600D80F39 /* Character */,
 			);
@@ -110,11 +118,23 @@
 			children = (
 				CA00C086253D8D9400D80F39 /* Weapon.swift */,
 				CA00C096253D955E00D80F39 /* TwoHendedSword.swift */,
+				CA56BB24256270F200182D43 /* DoubleSwords.swift */,
 				CA00C099253D959100D80F39 /* TreeTrunk.swift */,
+				CA56BB2725627CC800182D43 /* GiantFronde.swift */,
 				CA00C09C253D95A000D80F39 /* IncantationBook.swift */,
+				CA56BB1B25626E7900182D43 /* VoidStaff.swift */,
 				CA00C09F253D95B400D80F39 /* HandsNude.swift */,
+				CA56BB2F25627D9100182D43 /* TibetanBowl.swift */,
 			);
 			path = Weapon;
+			sourceTree = "<group>";
+		};
+		CAD1721F25762BD7005E4E58 /* Player */ = {
+			isa = PBXGroup;
+			children = (
+				CA00C0A5253D978400D80F39 /* Player.swift */,
+			);
+			path = Player;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -144,7 +164,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1200;
-				LastUpgradeCheck = 1200;
+				LastUpgradeCheck = 1230;
 				TargetAttributes = {
 					CA00C071253D8A9B00D80F39 = {
 						CreatedOnToolsVersion = 12.0.1;
@@ -178,11 +198,15 @@
 				CA00C076253D8A9B00D80F39 /* main.swift in Sources */,
 				CA00C0A6253D978400D80F39 /* Player.swift in Sources */,
 				CA00C08B253D938A00D80F39 /* Warrior.swift in Sources */,
+				CA56BB2825627CC800182D43 /* GiantFronde.swift in Sources */,
+				CA56BB3025627D9100182D43 /* TibetanBowl.swift in Sources */,
 				CA00C09A253D959100D80F39 /* TreeTrunk.swift in Sources */,
 				CA00C087253D8D9400D80F39 /* Weapon.swift in Sources */,
 				CA00C091253D93B800D80F39 /* Magus.swift in Sources */,
 				CA00C097253D955E00D80F39 /* TwoHendedSword.swift in Sources */,
+				CA56BB1C25626E7900182D43 /* VoidStaff.swift in Sources */,
 				CA00C083253D8D1100D80F39 /* Character.swift in Sources */,
+				CA56BB25256270F200182D43 /* DoubleSwords.swift in Sources */,
 				CA00C08E253D93AF00D80F39 /* Colossus.swift in Sources */,
 				CA00C0A3253D971800D80F39 /* InGame.swift in Sources */,
 				CA00C094253D93C500D80F39 /* Priest.swift in Sources */,
@@ -312,6 +336,7 @@
 		CA00C07A253D8A9B00D80F39 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 78PX5NWF8H;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -323,6 +348,7 @@
 		CA00C07B253D8A9B00D80F39 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 78PX5NWF8H;
 				ENABLE_HARDENED_RUNTIME = YES;

@@ -8,8 +8,7 @@
 import Foundation
 
 class Colossus: Character {
-    
     init(name: String) {
-        super.init(name: name, type: .colossus, lifePoint: 110, maxHealt: 110, weapon: TreeTrunk())
+        super.init(name: name, characterType: .colossus, lifePoint: 120, maxHealt: 120, weapon: TreeTrunk())
     }
 }

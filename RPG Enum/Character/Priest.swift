@@ -9,54 +9,24 @@ import Foundation
 
 class Priest: Character {
     init(name: String) {
-        super.init(name: name, type: .priest, lifePoint: 90, maxHealt: 90, weapon: HandsNude())
+        super.init(name: name, characterType: .priest, lifePoint: 90, maxHealt: 90, weapon: HandsNude())
     }
     
-    
-    
-    override func die() -> String {
-        if self .isDead {
-            return super.die()
+    override func showStatus() -> String {
+        if isDead() {
+            return super.showStatus()
         } else {
-            return "\(type) \(name) -- \(lifePoint)/\(maxHealt)HP -- \(weapon.damage)heal "
+            return "\(characterType) \(name) -- \(lifePoint)/\(maxHealth)HP -- \(weapon.damage)heal "
         }
     }
     
-    
-    
-    func healing(_ target: Character) {
-        if target.lifePoint >= target.maxHealt {
-            print("Sorry, you are already full life!")
-            return
-        }
-        target.lifePoint += weapon.damage
-        
-        if target.lifePoint > target.maxHealt {
-            target.lifePoint = target.maxHealt
+    override func actionOn(_ target: Character) {
+        if target.lifePoint >= target.maxHealth {
+            print("Sorry, you are already full life.")
+        } else if target.lifePoint + weapon.damage > target.maxHealth {
+            target.lifePoint = target.maxHealth
+        } else {
+            target.lifePoint += weapon.damage
         }
     }
 }
-
-//override func actionOn(target: Character) {
-//    if target.lifePoint >= target.maxHealt {
-//        print("Sorry, you are already full life!")
-//        return
-//    }
-//    target.lifePoint += weapon.damage
-//    if target.lifePoint > target.maxHealt {
-//        target.lifePoint = target.maxHealt
-//    }
-//}
-
-
-
-//    func healAlly (_ targetCharacter: Characters) {
-//        if targetCharacter.lifePoint >= targetCharacter.maxHealt{
-//            print("Sorry, you are already full life")
-//            return
-//        }
-//        targetCharacter.lifePoint += self.weapon.damage
-//        if targetCharacter.lifePoint > targetCharacter.maxHealt{
-//            targetCharacter.lifePoint = targetCharacter.maxHealt
-//        }
-//    }

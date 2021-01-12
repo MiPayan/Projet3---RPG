@@ -9,52 +9,72 @@ import Foundation
 
 class Character {
     var name: String
-    let type: CharacterType
-    let maxHealt: Int
-    let weapon: Weapon
-    var isDead = false
+    let characterType: CharacterType
+    let maxHealth: Int
+    var weapon: Weapon
     var lifePoint: Int {
         willSet {
             if newValue > lifePoint {
-                print("\(self.name) is about to get heal")
+                print("\(name) is about to get heal")
             } else {
-                print("\(self.name) is about to get attack")
+                print("\(name) is about to get attack")
             }
         }
         
         didSet {
             if oldValue > lifePoint {
-                print("\(self.name) lose \(oldValue - lifePoint)HP")
+                print("\(name) lose \(oldValue - lifePoint)HP")
             } else {
-                print("\(self.name) has been healed.. +\(lifePoint - oldValue)")
+                print("\(name) has been healed.. +\(lifePoint - oldValue)")
             }
         }
     }
     
-    init(name: String, type: CharacterType, lifePoint: Int, maxHealt: Int, weapon: Weapon) {
+    init(name: String, characterType: CharacterType, lifePoint: Int, maxHealt: Int, weapon: Weapon) {
         self.name = name
-        self.type = type
+        self.characterType = characterType
         self.lifePoint = lifePoint
-        self.maxHealt = maxHealt
+        self.maxHealth = maxHealt
         self.weapon = weapon
     }
     
-    
-    
-    func die() -> String {
-        if isDead {
-            return "\(type) \(name) is dead in the fight"
+    func showStatus() -> String {
+        if isDead() {
+            return "\(characterType) \(name) is dead in the fight"
         } else {
-            return "\(type) \(name) -- \(lifePoint)/\(maxHealt)HP -- \(weapon.damage)DMG "
+            return "\(characterType) \(name) -- \(lifePoint)/\(maxHealth)HP -- \(weapon.damage)DMG "
         }
-        
     }
     
     func actionOn(_ target: Character) {
-        target.lifePoint -= self.weapon.damage
-        
-        if target.lifePoint <= 0 {
-            target.isDead = true
+        if !isDead() {
+            target.lifePoint -= weapon.damage
+        }
+        return
+    }
+    
+    func isDead() -> Bool {
+        if lifePoint <= 0 {
+            return true
+        }
+        return false
+    }
+    
+    func bonusWeapon() {
+        if let warrior = self as? Warrior  {
+            warrior.weapon = DoubleSwords()
+            print("Good, your \(CharacterType.warrior)(\(name)) has unlocked a weapon: \(weapon.name), + 10 damage. Check out your new stats 😊.")
+        } else if let colossus = self as? Colossus {
+            colossus.weapon = GiantFronde()
+            print("Good, your \(CharacterType.colossus)(\(name)) has unlocked a weapon: \(weapon.name), + 10 damage. Check out your new stats 😊.")
+        } else if let magus = self as? Magus {
+            magus.weapon = VoidStaff()
+            print("Good, your \(CharacterType.magus)(\(name)) has unlocked a weapon: \(weapon.name), + 10 damage. Check out your new stats 😊.")
+            
+        } else if let priest = self as? Priest {
+            priest.weapon = TibetanBowl()
+            print("Good, your \(CharacterType.priest)(\(name)) has unlocked a weapon: \(weapon.name), + 10 damage. Check out your new stats 😊.")
         }
     }
 }
+
