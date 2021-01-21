@@ -1,5 +1,5 @@
 //
-//  InGame.swift
+//  Game.swift
 //  RPG Enum
 //
 //  Created by Mickael on 19/10/2020.
@@ -7,14 +7,14 @@
 
 import Foundation
 
-class InGame {
+class Game {
     
     var players = [Player]()
-    let maxPlayers = 2
-    var bonus = 0
-    let percentageBonusChest = 5
+    let maximumNumberOfSelectablePlayers = 2
+    var bonusCount = 0
+    let percentageOfHavingBonus = 5
     var turns = 1
-    var playingPlayer: Player {
+    var attackingPlayer: Player {
         players[turns % 2]
     }
     var targetPlayer: Player {
@@ -28,30 +28,29 @@ class InGame {
             2 - ❌ Quit ❌ -
             """)
         
-        if let line = readLine(){
+        if let line = readLine() {
             switch line {
             case "1":
                 createPlayers()
             case "2":
                 exitGame()
             default:
-                print("🤞🏼 Try again! 🤞🏼")
+                print("🤞🏼 You must choose between 1 and 2. Try again! 🤞🏼")
                 start()
             }
         }
     }
     
-    /// Create the players. 
     private func createPlayers() {
-        while players.count < maxPlayers {
-            print("Choose name of the player \(players.count + 1):")
+        while players.count < maximumNumberOfSelectablePlayers {
+            print("Choose player name \(players.count + 1):")
             if let name = readLine() {
-                if playerNameHasAlreadyChosen(name: name) {
-                    print("This name is already chosen.")
+                if hasPlayerNameAlreadyBeenChosen(name: name) {
+                    print("This name has been already chosen.")
                 } else if name.isEmpty {
-                    print("😡 You must to choose a name! 😡")
+                    print("😡 You must choose a name! 😡")
                 } else if name != name.trimmingCharacters(in: .whitespacesAndNewlines) {
-                    print("❌ Sorry, the space are not allowed. ❌")
+                    print("❌ Sorry, space are not allowed. ❌")
                 } else {
                     players.append(Player(name: name))
                 }
@@ -60,7 +59,7 @@ class InGame {
         selectCharacterForEachPlayer()
     }
     
-    private func playerNameHasAlreadyChosen(name: String) -> Bool {
+    private func hasPlayerNameAlreadyBeenChosen(name: String) -> Bool {
         for player in players {
             if player.name == name {
                 return true
@@ -71,56 +70,56 @@ class InGame {
     
     private func selectCharacterForEachPlayer() {
         for player in players {
-            player.selectCharacter()
+            player.buildYourTeamBySelectingCharacters()
             
             print("✅ \(player.name) is ready! ✅")
         }
         print("⚠️ How to play? Same as character selection. Select your character to attack or heal, and after, select your target. ⚠️")
         print("Let's go to fight!")
         
-        fight()
+        makeFight()
     }
     
-    private func fight() {
-        let fightingCharacter = playingPlayer.selectCharacterForHealingOrFighting()
-        randomChest(fightingCharacter: fightingCharacter)
+    private func makeFight() {
+        let fightingCharacter = attackingPlayer.selectCharacterForHealingOrFighting()
+        getsRandomBonus(fightingCharacter: fightingCharacter)
         
         let targetCharacter = chooseTarget(fightingCharacter: fightingCharacter)
-        fightingCharacter.actionOn(targetCharacter)
+        fightingCharacter.attackOrHeal(targetCharacter)
         
         if targetPlayer.isDefeat() {
             print("⚰️ All of your characters are dead.. Sorry, \(targetPlayer.name) you lost. ⚰️")
             statistics()
         } else {
             turns += 1
-            return fight()
+            return makeFight()
         }
     }
     
     private func chooseTarget(fightingCharacter: Character) -> Character {
-        let player = fightingCharacter is Priest ? playingPlayer : targetPlayer
+        let player = fightingCharacter is Priest ? attackingPlayer : targetPlayer
         return player.selectAllyToHealOrEnemyToAttack(character: fightingCharacter)
     }
     
-    private func randomChest(fightingCharacter: Character) {
-        guard arc4random_uniform(100) <= percentageBonusChest else {
+    private func getsRandomBonus(fightingCharacter: Character) {
+        guard arc4random_uniform(100) <= percentageOfHavingBonus else {
             return
         }
-        if fightingCharacter is Warrior, hasAlreadyBonus(player: playingPlayer, weapon: DoubleSwords()) {
+        if fightingCharacter is Warrior, hasAlreadyGotBonus(player: attackingPlayer, weapon: DoubleSwords()) {
             return
-        } else if fightingCharacter is Colossus, hasAlreadyBonus(player: playingPlayer, weapon: GiantFronde()) {
+        } else if fightingCharacter is Colossus, hasAlreadyGotBonus(player: attackingPlayer, weapon: GiantFronde()) {
             return
-        } else if fightingCharacter is Magus, hasAlreadyBonus(player: playingPlayer, weapon: VoidStaff()) {
+        } else if fightingCharacter is Magus, hasAlreadyGotBonus(player: attackingPlayer, weapon: VoidStaff()) {
             return
-        } else if fightingCharacter is Priest, hasAlreadyBonus(player: playingPlayer, weapon: VoidStaff()) {
+        } else if fightingCharacter is Priest, hasAlreadyGotBonus(player: attackingPlayer, weapon: VoidStaff()) {
             return
         } else {
-            bonus += 1
-            fightingCharacter.bonusWeapon()
+            bonusCount += 1
+            fightingCharacter.addBonusToWeapon()
         }
     }
     
-    private func hasAlreadyBonus(player: Player, weapon: Weapon) -> Bool {
+    private func hasAlreadyGotBonus(player: Player, weapon: Weapon) -> Bool {
         for bonus in player.characters {
             if bonus.weapon.name == weapon.name {
                 return true
@@ -130,13 +129,13 @@ class InGame {
     }
     
     private func statistics() {
-        let winner = players.filter { !$0.isDefeat() }
-        
+        guard let winner = players.filter({ !$0.isDefeat() }).first else { return }
+
         print("""
             ❌ THE GAME IS OVER ❌
-            🥂 The winner is --|  \(winner[0].name)  |-- 🥂
+            🥂 The winner is --|  \(winner.name)  |-- 🥂
             ♻️ The game was finished in \(turns)turns ♻️
-            🎁 Bonus number: \(bonus) 🎁
+            🎁 Bonus number: \(bonusCount) 🎁
             """)
     }
     

@@ -16,11 +16,11 @@ class Priest: Character {
         if isDead() {
             return super.showStatus()
         } else {
-            return "\(characterType) \(name) -- \(lifePoint)/\(maxHealth)HP -- \(weapon.damage)heal "
+            return "\(characterType) \(name) -- \(lifePoint)/\(maxHealth)HP -- \(weapon.damage)heal"
         }
     }
     
-    override func actionOn(_ target: Character) {
+    override func attackOrHeal(_ target: Character) {
         if target.lifePoint >= target.maxHealth {
             print("Sorry, you are already full life.")
         } else if target.lifePoint + weapon.damage > target.maxHealth {

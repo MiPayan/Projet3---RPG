@@ -1,5 +1,5 @@
 //
-//  Team.swift
+//  Player.swift
 //  RPG Enum
 //
 //  Created by Mickael on 19/10/2020.
@@ -8,29 +8,29 @@
 import Foundation
 
 class Player {
-    
-    // MARK: -   
-    
+
     let name: String
     var characters = [Character]()
-    let maxPicks = 3
+    let maximumNumberOfSelectableCharacters = 3
     
     init(name: String) {
         self.name = name
     }
     
-    /// To choose the unique name of a single character. The name of the chosen character is "A", the name of another character cannot be "A". Must be different.
-    private func chooseCharacterName(_ picks: CharacterType) {
-        print("Choose \(picks) name:")
+    private func chooseCharacterName(_ characterType: CharacterType) {
+        print("Choose \(characterType) name:")
         if let name = readLine() {
             if isCharacterNameAlreadyChosen(name: name) {
-                print("This name is already choosen!")
+                print("This name has been already choosen!")
+                chooseCharacterName(characterType)
             } else if name.isEmpty {
                 print("😡 You need to choose a name for your character! 😡")
+                chooseCharacterName(characterType)
             } else if name != name.trimmingCharacters(in: .whitespacesAndNewlines) {
-                print(" Your character needs a name without spaces. 🙄")
+                print(" Your character needs a name without spaces.")
+                chooseCharacterName(characterType)
             } else {
-                switch picks {
+                switch characterType {
                 case .warrior:
                     characters.append(Warrior(name: name))
                 case .colossus:
@@ -40,7 +40,7 @@ class Player {
                 case .priest:
                     characters.append(Priest(name: name))
                 }
-                print("Your \(picks) \(name) has been added to your team.")
+                print("Your \(characterType) \(name) has been added to your team.")
             }
         }
     }
@@ -54,38 +54,37 @@ class Player {
         return false
     }
     
-    private func characterPick() -> Character? {
+    private func selectCharacter() -> Character? {
         if let choose = readLine() {
             guard !choose.isEmpty else {
                 print("You need to choose a character.")
-                return characterPick()
+                return selectCharacter()
             }
             
             guard let numberChoose = Int(choose) else {
                 print("Impossible choice!")
-                return characterPick()
+                return selectCharacter()
             }
             
-            guard numberChoose <= maxPicks, numberChoose > 0 else {
-                print("You only have \(maxPicks) characters")
-                return characterPick()
+            guard numberChoose <= maximumNumberOfSelectableCharacters, numberChoose > 0 else {
+                print("You only have \(maximumNumberOfSelectableCharacters) characters")
+                return selectCharacter()
             }
             
             guard isAlive(characters[numberChoose - 1]) else {
                 print("You need to choose a character")
-                return characterPick()
+                return selectCharacter()
             }
             return characters[numberChoose - 1]
         }
         
         print("I can't ask for your choice..")
-        return characterPick()
+        return selectCharacter()
     }
     
-    /// To select the characters
-    func selectCharacter() {
+    func buildYourTeamBySelectingCharacters() {
         print(" ⚠️ The same character cannot be selected more than once. Select your character by entering 1, 2, 3 or 4 and choose a name for him. Maximum of three characters per team. ⚠️")
-        while characters.count < maxPicks {
+        while characters.count < maximumNumberOfSelectableCharacters {
             print("""
                 \(name), you must choose \(3 - characters.count) character:
                 1 - ⚔️ Warrior ⚔️ - Simple, basic but efficient.
@@ -101,26 +100,26 @@ class Player {
             if let picks = readLine(), !picks.isEmpty {
                 switch picks {
                 case "1":
-                    if alreadyChosen(.warrior) {
+                    if hasBeenAlreadyChosen(.warrior) {
                         print("The \(CharacterType.warrior) is already chosen! Please, make another choice.")
-                        selectCharacter()
+                        buildYourTeamBySelectingCharacters()
                     } else {
                         chooseCharacterName(.warrior)
                     }
                 case "2":
-                    if alreadyChosen(.colossus) {
+                    if hasBeenAlreadyChosen(.colossus) {
                         print("The \(CharacterType.colossus) is already chosen! Please, make another choice.")
                     } else {
                         chooseCharacterName(.colossus)
                     }
                 case "3":
-                    if alreadyChosen(.magus) {
+                    if hasBeenAlreadyChosen(.magus) {
                         print("The \(CharacterType.magus) is already chosen! Please, make another choice.")
                     } else {
                         chooseCharacterName(.magus)
                     }
                 case "4":
-                    if alreadyChosen(.priest) {
+                    if hasBeenAlreadyChosen(.priest) {
                         print("The \(CharacterType.priest) is already chosen! Please, make another choice.")
                     } else {
                         chooseCharacterName(.priest)
@@ -138,7 +137,7 @@ class Player {
     }
     
     /// The player can only choose a character type once. For example, if the choice is warrior, he cannot choose that type a second time.
-    private func alreadyChosen(_ characterType: CharacterType) -> Bool {
+    private func hasBeenAlreadyChosen(_ characterType: CharacterType) -> Bool { 
         for character in characters {
             if character.characterType == characterType {
                 return true
@@ -151,11 +150,7 @@ class Player {
     func selectCharacterForHealingOrFighting() -> Character {
         print("\(name), choose a character to fight or heal:")
         
-        characterDescription()
-        
-        if let selectCharacter = characterPick() {
-            return selectCharacter
-        }
+        diplayCharactersDescription()
         
         if let choose = readLine() {
             guard !choose.isEmpty else {
@@ -168,8 +163,8 @@ class Player {
                 return selectCharacterForHealingOrFighting()
             }
             
-            guard numberChoose <= maxPicks, numberChoose > 0 else {
-                print("You only have \(maxPicks) characters")
+            guard numberChoose <= maximumNumberOfSelectableCharacters, numberChoose > 0 else {
+                print("You only have \(maximumNumberOfSelectableCharacters) characters")
                 return selectCharacterForHealingOrFighting()
             }
             
@@ -183,9 +178,8 @@ class Player {
         print("I can't ask for your choice..")
         return selectCharacterForHealingOrFighting()
     }
-    
-    ///
-    private func characterDescription() {
+
+    private func diplayCharactersDescription() {
         for (index, character) in characters.enumerated() {
             print("\(index + 1) \(character.showStatus())")
         }
@@ -198,9 +192,9 @@ class Player {
         } else {
             print("🎯 Who is the target? Chosen from the team of \(name). 🎯")
         }
-        characterDescription()
+        diplayCharactersDescription()
         
-        if let targetTheAllyCharacter = characterPick() {
+        if let targetTheAllyCharacter = selectCharacter() { /// Le nom de la constante n'est pas clair du tout.
             return targetTheAllyCharacter
         }
         return selectAllyToHealOrEnemyToAttack(character: character)
@@ -218,7 +212,7 @@ class Player {
     /// To check if all of the characters of team are dead. The player lost, else, the game continues.
     func isDefeat() -> Bool {
         let charactersAreDead = characters.filter { $0.isDead() }
-        if charactersAreDead.count == maxPicks {
+        if charactersAreDead.count == maximumNumberOfSelectableCharacters {
             return true
         }
         return false

@@ -19,7 +19,7 @@
 		CA00C09A253D959100D80F39 /* TreeTrunk.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA00C099253D959100D80F39 /* TreeTrunk.swift */; };
 		CA00C09D253D95A000D80F39 /* IncantationBook.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA00C09C253D95A000D80F39 /* IncantationBook.swift */; };
 		CA00C0A0253D95B400D80F39 /* HandsNude.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA00C09F253D95B400D80F39 /* HandsNude.swift */; };
-		CA00C0A3253D971800D80F39 /* InGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA00C0A2253D971800D80F39 /* InGame.swift */; };
+		CA00C0A3253D971800D80F39 /* Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA00C0A2253D971800D80F39 /* Game.swift */; };
 		CA00C0A6253D978400D80F39 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA00C0A5253D978400D80F39 /* Player.swift */; };
 		CA56BB1C25626E7900182D43 /* VoidStaff.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA56BB1B25626E7900182D43 /* VoidStaff.swift */; };
 		CA56BB25256270F200182D43 /* DoubleSwords.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA56BB24256270F200182D43 /* DoubleSwords.swift */; };
@@ -53,7 +53,7 @@
 		CA00C099253D959100D80F39 /* TreeTrunk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeTrunk.swift; sourceTree = "<group>"; };
 		CA00C09C253D95A000D80F39 /* IncantationBook.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncantationBook.swift; sourceTree = "<group>"; };
 		CA00C09F253D95B400D80F39 /* HandsNude.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandsNude.swift; sourceTree = "<group>"; };
-		CA00C0A2253D971800D80F39 /* InGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InGame.swift; sourceTree = "<group>"; };
+		CA00C0A2253D971800D80F39 /* Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Game.swift; sourceTree = "<group>"; };
 		CA00C0A5253D978400D80F39 /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		CA56BB1B25626E7900182D43 /* VoidStaff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoidStaff.swift; sourceTree = "<group>"; };
 		CA56BB24256270F200182D43 /* DoubleSwords.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoubleSwords.swift; sourceTree = "<group>"; };
@@ -91,7 +91,7 @@
 		CA00C074253D8A9B00D80F39 /* RPG Enum */ = {
 			isa = PBXGroup;
 			children = (
-				CA00C0A2253D971800D80F39 /* InGame.swift */,
+				CA00C0A2253D971800D80F39 /* Game.swift */,
 				CA00C075253D8A9B00D80F39 /* main.swift */,
 				CAD1721F25762BD7005E4E58 /* Player */,
 				CA00C085253D8D5C00D80F39 /* Weapon */,
@@ -208,7 +208,7 @@
 				CA00C083253D8D1100D80F39 /* Character.swift in Sources */,
 				CA56BB25256270F200182D43 /* DoubleSwords.swift in Sources */,
 				CA00C08E253D93AF00D80F39 /* Colossus.swift in Sources */,
-				CA00C0A3253D971800D80F39 /* InGame.swift in Sources */,
+				CA00C0A3253D971800D80F39 /* Game.swift in Sources */,
 				CA00C094253D93C500D80F39 /* Priest.swift in Sources */,
 				CA00C09D253D95A000D80F39 /* IncantationBook.swift in Sources */,
 				CA00C07F253D8CBA00D80F39 /* CharacterType.swift in Sources */,
@@ -340,6 +340,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 78PX5NWF8H;
 				ENABLE_HARDENED_RUNTIME = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 			};
@@ -352,6 +353,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 78PX5NWF8H;
 				ENABLE_HARDENED_RUNTIME = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 			};

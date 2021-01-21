@@ -1,5 +1,5 @@
 //
-//  Characters.swift
+//  Character.swift
 //  RPG Enum
 //
 //  Created by Mickael on 19/10/2020.
@@ -42,15 +42,12 @@ class Character {
         if isDead() {
             return "\(characterType) \(name) is dead in the fight"
         } else {
-            return "\(characterType) \(name) -- \(lifePoint)/\(maxHealth)HP -- \(weapon.damage)DMG "
+            return "\(characterType) \(name) -- \(lifePoint)/\(maxHealth)HP -- \(weapon.damage)Damages"
         }
     }
     
-    func actionOn(_ target: Character) {
-        if !isDead() {
-            target.lifePoint -= weapon.damage
-        }
-        return
+    func attackOrHeal(_ target: Character) {
+        target.lifePoint -= weapon.damage
     }
     
     func isDead() -> Bool {
@@ -60,7 +57,7 @@ class Character {
         return false
     }
     
-    func bonusWeapon() {
+    func addBonusToWeapon() { /// addBonusToWeapon()
         if let warrior = self as? Warrior  {
             warrior.weapon = DoubleSwords()
             print("Good, your \(CharacterType.warrior)(\(name)) has unlocked a weapon: \(weapon.name), + 10 damage. Check out your new stats 😊.")
