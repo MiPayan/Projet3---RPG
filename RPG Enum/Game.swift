@@ -9,15 +9,15 @@ import Foundation
 
 class Game {
     
-    var players = [Player]()
-    let maximumNumberOfSelectablePlayers = 2
-    var bonusCount = 0
-    let percentageOfHavingBonus = 5
-    var turns = 1
-    var attackingPlayer: Player {
+    private var players = [Player]()
+    private let maximumNumberOfSelectablePlayers = 2
+    private var bonusCount = 0
+    private let percentageOfHavingBonus = 5
+    private var turns = 1
+    private var attackingPlayer: Player {
         players[turns % 2]
     }
-    var targetPlayer: Player {
+    private var targetPlayer: Player {
         players[(turns + 1) % 2]
     }
     
@@ -70,7 +70,7 @@ class Game {
     
     private func selectCharacterForEachPlayer() {
         for player in players {
-            player.buildYourTeamBySelectingCharacters()
+            player.makeYourTeamBySelectingCharacters()
             
             print("✅ \(player.name) is ready! ✅")
         }
@@ -130,11 +130,11 @@ class Game {
     
     private func statistics() {
         guard let winner = players.filter({ !$0.isDefeat() }).first else { return }
-
+        
         print("""
             ❌ THE GAME IS OVER ❌
             🥂 The winner is --|  \(winner.name)  |-- 🥂
-            ♻️ The game was finished in \(turns)turns ♻️
+            ♻️ The game was finished in \(turns)turns. ♻️
             🎁 Bonus number: \(bonusCount) 🎁
             """)
     }

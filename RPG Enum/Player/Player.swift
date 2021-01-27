@@ -8,10 +8,10 @@
 import Foundation
 
 class Player {
-
+    
     let name: String
     var characters = [Character]()
-    let maximumNumberOfSelectableCharacters = 3
+    private let maximumNumberOfSelectableCharacters = 3
     
     init(name: String) {
         self.name = name
@@ -24,7 +24,7 @@ class Player {
                 print("This name has been already choosen!")
                 chooseCharacterName(characterType)
             } else if name.isEmpty {
-                print("😡 You need to choose a name for your character! 😡")
+                print("😡 Is empty. You need to choose a name for your character! 😡")
                 chooseCharacterName(characterType)
             } else if name != name.trimmingCharacters(in: .whitespacesAndNewlines) {
                 print(" Your character needs a name without spaces.")
@@ -54,25 +54,26 @@ class Player {
         return false
     }
     
+    /// When the description of enemy characters is displayed, and when you select a target, if the selection is not correct, it announced an error message and we can try to select a target again.
     private func selectCharacter() -> Character? {
         if let choose = readLine() {
             guard !choose.isEmpty else {
-                print("You need to choose a character.")
+                print("The choice is empty. You need to choose a character.")
                 return selectCharacter()
             }
             
             guard let numberChoose = Int(choose) else {
-                print("Impossible choice!")
+                print("A typo? A space? Impossible choice. Try again.")
                 return selectCharacter()
             }
             
             guard numberChoose <= maximumNumberOfSelectableCharacters, numberChoose > 0 else {
-                print("You only have \(maximumNumberOfSelectableCharacters) characters")
+                print("You only have \(maximumNumberOfSelectableCharacters) characters.")
                 return selectCharacter()
             }
             
             guard isAlive(characters[numberChoose - 1]) else {
-                print("You need to choose a character")
+                print("This character is dead. You need to choose alive character.")
                 return selectCharacter()
             }
             return characters[numberChoose - 1]
@@ -82,7 +83,7 @@ class Player {
         return selectCharacter()
     }
     
-    func buildYourTeamBySelectingCharacters() {
+    func makeYourTeamBySelectingCharacters() {
         print(" ⚠️ The same character cannot be selected more than once. Select your character by entering 1, 2, 3 or 4 and choose a name for him. Maximum of three characters per team. ⚠️")
         while characters.count < maximumNumberOfSelectableCharacters {
             print("""
@@ -100,39 +101,29 @@ class Player {
             if let picks = readLine(), !picks.isEmpty {
                 switch picks {
                 case "1":
-                    if hasBeenAlreadyChosen(.warrior) {
-                        print("The \(CharacterType.warrior) is already chosen! Please, make another choice.")
-                        buildYourTeamBySelectingCharacters()
-                    } else {
-                        chooseCharacterName(.warrior)
-                    }
+                    chooseCharacterNameIfHasNotBeenAlreadyChosen(characterType: .warrior)
                 case "2":
-                    if hasBeenAlreadyChosen(.colossus) {
-                        print("The \(CharacterType.colossus) is already chosen! Please, make another choice.")
-                    } else {
-                        chooseCharacterName(.colossus)
-                    }
+                    chooseCharacterNameIfHasNotBeenAlreadyChosen(characterType: .colossus)
                 case "3":
-                    if hasBeenAlreadyChosen(.magus) {
-                        print("The \(CharacterType.magus) is already chosen! Please, make another choice.")
-                    } else {
-                        chooseCharacterName(.magus)
-                    }
+                    chooseCharacterNameIfHasNotBeenAlreadyChosen(characterType: .magus)
                 case "4":
-                    if hasBeenAlreadyChosen(.priest) {
-                        print("The \(CharacterType.priest) is already chosen! Please, make another choice.")
-                    } else {
-                        chooseCharacterName(.priest)
-                    }
+                    chooseCharacterNameIfHasNotBeenAlreadyChosen(characterType: .priest)
                 default:
-                    print("Please, make your choice")
+                    print("Please, make your choice.")
                 // if the choice is different of 1,2,3 or 4.
                 }
-                
             } else {
-                print("You need to choose a character, between 1,2,3 and 4")
+                print("You need to choose a character, between 1,2,3 and 4.")
                 // if the choice is empty.
             }
+        }
+    }
+    
+    func chooseCharacterNameIfHasNotBeenAlreadyChosen(characterType: CharacterType) {
+        if hasBeenAlreadyChosen(characterType) {
+            print("The \(characterType) is already chosen! Please, make another choice.")
+        } else {
+            chooseCharacterName(characterType)
         }
     }
     
@@ -146,7 +137,7 @@ class Player {
         return false
     }
     
-    /// For choose the character to inflige damage at the ennemy or heal an ally
+    /// For choose the character to inflige damage at the ennemy or heal an ally.
     func selectCharacterForHealingOrFighting() -> Character {
         print("\(name), choose a character to fight or heal:")
         
@@ -154,22 +145,22 @@ class Player {
         
         if let choose = readLine() {
             guard !choose.isEmpty else {
-                print("You need to choose a character.")
+                print("The choice is empty. You need to choose a character.")
                 return selectCharacterForHealingOrFighting()
             }
             
             guard let numberChoose = Int(choose) else {
-                print("Impossible choice!")
+                print("A typo? A space? Impossible choice. Try again.")
                 return selectCharacterForHealingOrFighting()
             }
             
             guard numberChoose <= maximumNumberOfSelectableCharacters, numberChoose > 0 else {
-                print("You only have \(maximumNumberOfSelectableCharacters) characters")
+                print("You only have \(maximumNumberOfSelectableCharacters) characters.")
                 return selectCharacterForHealingOrFighting()
             }
             
             guard isAlive(characters[numberChoose - 1]) else {
-                print("You need to choose a character")
+                print("This character is dead. You need to choose an alive character.")
                 return selectCharacterForHealingOrFighting()
             }
             return characters[numberChoose - 1]
@@ -178,7 +169,7 @@ class Player {
         print("I can't ask for your choice..")
         return selectCharacterForHealingOrFighting()
     }
-
+    
     private func diplayCharactersDescription() {
         for (index, character) in characters.enumerated() {
             print("\(index + 1) \(character.showStatus())")
@@ -194,8 +185,8 @@ class Player {
         }
         diplayCharactersDescription()
         
-        if let targetTheAllyCharacter = selectCharacter() { /// Le nom de la constante n'est pas clair du tout.
-            return targetTheAllyCharacter
+        if let characterToHealOrAttack = selectCharacter() {
+            return characterToHealOrAttack
         }
         return selectAllyToHealOrEnemyToAttack(character: character)
     }
@@ -209,7 +200,7 @@ class Player {
         return true
     }
     
-    /// To check if all of the characters of team are dead. The player lost, else, the game continues.
+    /// Filter checks each object in the array (characters)  to see if it meets the condition. Check if all of the characters of team are dead. The player lost, else, the game continues.
     func isDefeat() -> Bool {
         let charactersAreDead = characters.filter { $0.isDead() }
         if charactersAreDead.count == maximumNumberOfSelectableCharacters {

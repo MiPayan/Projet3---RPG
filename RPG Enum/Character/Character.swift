@@ -8,7 +8,7 @@
 import Foundation
 
 class Character {
-    var name: String
+    let name: String
     let characterType: CharacterType
     let maxHealth: Int
     var weapon: Weapon
@@ -23,9 +23,9 @@ class Character {
         
         didSet {
             if oldValue > lifePoint {
-                print("\(name) lose \(oldValue - lifePoint)HP")
+                print("\(name) lose \(oldValue - lifePoint)HP.")
             } else {
-                print("\(name) has been healed.. +\(lifePoint - oldValue)")
+                print("\(name) has been healed.. +\(lifePoint - oldValue).")
             }
         }
     }
@@ -40,9 +40,9 @@ class Character {
     
     func showStatus() -> String {
         if isDead() {
-            return "\(characterType) \(name) is dead in the fight"
+            return "\(characterType) \(name) is dead in the fight."
         } else {
-            return "\(characterType) \(name) -- \(lifePoint)/\(maxHealth)HP -- \(weapon.damage)Damages"
+            return "\(characterType) \(name) -- \(lifePoint)/\(maxHealth)HP -- \(weapon.damage)Damages."
         }
     }
     
@@ -57,7 +57,7 @@ class Character {
         return false
     }
     
-    func addBonusToWeapon() { /// addBonusToWeapon()
+    func addBonusToWeapon() {
         if let warrior = self as? Warrior  {
             warrior.weapon = DoubleSwords()
             print("Good, your \(CharacterType.warrior)(\(name)) has unlocked a weapon: \(weapon.name), + 10 damage. Check out your new stats 😊.")

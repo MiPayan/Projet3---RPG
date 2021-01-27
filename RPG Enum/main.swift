@@ -7,5 +7,5 @@
 
 import Foundation
 
-let game = Game()
+private let game = Game()
 game.start()
