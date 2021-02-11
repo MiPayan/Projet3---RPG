@@ -25,7 +25,7 @@ class Character {
             if oldValue > lifePoint {
                 print("\(name) lose \(oldValue - lifePoint)HP.")
             } else {
-                print("\(name) has been healed.. +\(lifePoint - oldValue).")
+                print("\(name) has been healed.. +\(lifePoint - oldValue)HP.")
             }
         }
     }
@@ -38,13 +38,6 @@ class Character {
         self.weapon = weapon
     }
     
-    func showStatus() -> String {
-        if isDead() {
-            return "\(characterType) \(name) is dead in the fight."
-        } else {
-            return "\(characterType) \(name) -- \(lifePoint)/\(maxHealth)HP -- \(weapon.damage)Damages."
-        }
-    }
     
     func attackOrHeal(_ target: Character) {
         target.lifePoint -= weapon.damage
@@ -55,6 +48,14 @@ class Character {
             return true
         }
         return false
+    }
+    
+    func showStatus() -> String {
+        if isDead() {
+            return "\(characterType) \(name) is dead in the fight."
+        } else {
+            return "\(characterType) \(name) -- \(lifePoint)/\(maxHealth)HP -- \(weapon.damage)Damages."
+        }
     }
     
     func addBonusToWeapon() {

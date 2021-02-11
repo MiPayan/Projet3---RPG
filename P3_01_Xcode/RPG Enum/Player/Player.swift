@@ -17,18 +17,62 @@ class Player {
         self.name = name
     }
     
-    private func chooseCharacterName(_ characterType: CharacterType) {
+    func makeYourTeamBySelectingCharacters(_ enemyCharacters: [Character]?) {
+        print(" ⚠️ The same character cannot be selected more than once. Select your character by entering 1, 2, 3 or 4 and choose a name for him. Maximum of three characters per team. ⚠️")
+        while characters.count < maximumNumberOfSelectableCharacters {
+            print("""
+                \(name), you must choose \(3 - characters.count) character:
+                1 - ⚔️ Warrior ⚔️ - Simple, basic but efficient.
+                Damage: 20  ||  Lifepoint: 90
+                2 - 💪🏼 Colossus 💪🏼 - Thick smelly creature, can't even see his feet.
+                Damage: 10  ||  Lifepoint: 110
+                3 - 🧙🏼‍♂️ Magus 🧙🏼‍♂️ - Devastating power, but enough sensitive.
+                Damage: 25  ||  Lifepoint: 70
+                4 - 🙏🏼 Priest 🙏🏼 - Robust ally, incapable of causing harm.
+                Healing: 10  ||  Lifepoint: 90
+                """)
+            
+            if let picks = readLine(), !picks.isEmpty {
+                switch picks {
+                case "1":
+                    chooseCharacterIfHasNotBeenAlreadyChosen(.warrior, enemyCharacters)
+                case "2":
+                    chooseCharacterIfHasNotBeenAlreadyChosen(.colossus, enemyCharacters)
+                case "3":
+                    chooseCharacterIfHasNotBeenAlreadyChosen(.magus, enemyCharacters)
+                case "4":
+                    chooseCharacterIfHasNotBeenAlreadyChosen(.priest, enemyCharacters)
+                default:
+                    print("Please, make your choice.")
+                // if the choice is different of 1,2,3 or 4.
+                }
+            } else {
+                print("You need to choose a character, between 1,2,3 and 4.")
+                // if the choice is empty.
+            }
+        }
+    }
+    
+    func chooseCharacterIfHasNotBeenAlreadyChosen(_ characterType: CharacterType,_ enemyCharacters: [Character]?) {
+        if hasBeenAlreadyChosen(characterType) {
+            print("The \(characterType) is already chosen! Please, make another choice.")
+        } else {
+            chooseCharacterName(characterType, enemyCharacters)
+        }
+    }
+
+    private func chooseCharacterName(_ characterType: CharacterType, _ enemyCharacters: [Character]?) {
         print("Choose \(characterType) name:")
         if let name = readLine() {
-            if isCharacterNameAlreadyChosen(name: name) {
+            if isCharacterNameAlreadyChosen(name, enemyCharacters) {
                 print("This name has been already choosen!")
-                chooseCharacterName(characterType)
+                chooseCharacterName(characterType, enemyCharacters)
             } else if name.isEmpty {
                 print("😡 Is empty. You need to choose a name for your character! 😡")
-                chooseCharacterName(characterType)
+                chooseCharacterName(characterType, enemyCharacters)
             } else if name != name.trimmingCharacters(in: .whitespacesAndNewlines) {
                 print(" Your character needs a name without spaces.")
-                chooseCharacterName(characterType)
+                chooseCharacterName(characterType, enemyCharacters)
             } else {
                 switch characterType {
                 case .warrior:
@@ -45,10 +89,18 @@ class Player {
         }
     }
     
-    private func isCharacterNameAlreadyChosen(name: String) -> Bool {
+    private func isCharacterNameAlreadyChosen(_ name: String,_ enemyCharacters: [Character]?) -> Bool {
         for character in characters {
             if character.name == name {
                 return true
+            }
+        }
+        
+        if let enemyCharacters = enemyCharacters {
+            for character in enemyCharacters {
+                if character.name == name {
+                    return true
+                }
             }
         }
         return false
@@ -82,51 +134,7 @@ class Player {
         print("I can't ask for your choice..")
         return selectCharacter()
     }
-    
-    func makeYourTeamBySelectingCharacters() {
-        print(" ⚠️ The same character cannot be selected more than once. Select your character by entering 1, 2, 3 or 4 and choose a name for him. Maximum of three characters per team. ⚠️")
-        while characters.count < maximumNumberOfSelectableCharacters {
-            print("""
-                \(name), you must choose \(3 - characters.count) character:
-                1 - ⚔️ Warrior ⚔️ - Simple, basic but efficient.
-                Damage: 20  ||  Lifepoint: 90
-                2 - 💪🏼 Colossus 💪🏼 - Thick smelly creature, can't even see his feet.
-                Damage: 10  ||  Lifepoint: 110
-                3 - 🧙🏼‍♂️ Magus 🧙🏼‍♂️ - Devastating power, but enough sensitive.
-                Damage: 25  ||  Lifepoint: 70
-                4 - 🙏🏼 Priest 🙏🏼 - Robust ally, incapable of causing harm.
-                Healing: 10  ||  Lifepoint: 90
-                """)
-            
-            if let picks = readLine(), !picks.isEmpty {
-                switch picks {
-                case "1":
-                    chooseCharacterNameIfHasNotBeenAlreadyChosen(characterType: .warrior)
-                case "2":
-                    chooseCharacterNameIfHasNotBeenAlreadyChosen(characterType: .colossus)
-                case "3":
-                    chooseCharacterNameIfHasNotBeenAlreadyChosen(characterType: .magus)
-                case "4":
-                    chooseCharacterNameIfHasNotBeenAlreadyChosen(characterType: .priest)
-                default:
-                    print("Please, make your choice.")
-                // if the choice is different of 1,2,3 or 4.
-                }
-            } else {
-                print("You need to choose a character, between 1,2,3 and 4.")
-                // if the choice is empty.
-            }
-        }
-    }
-    
-    func chooseCharacterNameIfHasNotBeenAlreadyChosen(characterType: CharacterType) {
-        if hasBeenAlreadyChosen(characterType) {
-            print("The \(characterType) is already chosen! Please, make another choice.")
-        } else {
-            chooseCharacterName(characterType)
-        }
-    }
-    
+        
     /// The player can only choose a character type once. For example, if the choice is warrior, he cannot choose that type a second time.
     private func hasBeenAlreadyChosen(_ characterType: CharacterType) -> Bool { 
         for character in characters {
@@ -177,7 +185,7 @@ class Player {
     }
     
     /// Choice of the target to attack between the three characters enemy.
-    func selectAllyToHealOrEnemyToAttack(character: Character) -> Character {
+    func selectAllyToHealOrEnemyToAttack(_ character: Character) -> Character {
         if character is Priest {
             print("🎯 \(name), which ally needs heal? 🎯")
         } else {
@@ -188,7 +196,7 @@ class Player {
         if let characterToHealOrAttack = selectCharacter() {
             return characterToHealOrAttack
         }
-        return selectAllyToHealOrEnemyToAttack(character: character)
+        return selectAllyToHealOrEnemyToAttack(character)
     }
     
     /// To check if character is dead.

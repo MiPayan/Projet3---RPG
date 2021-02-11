@@ -45,7 +45,7 @@ class Game {
         while players.count < maximumNumberOfSelectablePlayers {
             print("Choose player name \(players.count + 1):")
             if let name = readLine() {
-                if hasPlayerNameAlreadyBeenChosen(name: name) {
+                if hasPlayerNameAlreadyBeenChosen(name) {
                     print("This name has been already chosen.")
                 } else if name.isEmpty {
                     print("😡 You must choose a name! 😡")
@@ -59,7 +59,7 @@ class Game {
         selectCharacterForEachPlayer()
     }
     
-    private func hasPlayerNameAlreadyBeenChosen(name: String) -> Bool {
+    private func hasPlayerNameAlreadyBeenChosen(_ name: String) -> Bool {
         for player in players {
             if player.name == name {
                 return true
@@ -69,8 +69,14 @@ class Game {
     }
     
     private func selectCharacterForEachPlayer() {
-        for player in players {
-            player.makeYourTeamBySelectingCharacters()
+        for i in 0..<players.count {
+            let player = players[i]
+
+            if i == 1 {
+                player.makeYourTeamBySelectingCharacters(players[0].characters)
+            } else {
+                player.makeYourTeamBySelectingCharacters(nil)
+            }
             
             print("✅ \(player.name) is ready! ✅")
         }
@@ -84,7 +90,7 @@ class Game {
         let fightingCharacter = attackingPlayer.selectCharacterForHealingOrFighting()
         getsRandomBonus(fightingCharacter: fightingCharacter)
         
-        let targetCharacter = chooseTarget(fightingCharacter: fightingCharacter)
+        let targetCharacter = chooseTarget(fightingCharacter)
         fightingCharacter.attackOrHeal(targetCharacter)
         
         if targetPlayer.isDefeat() {
@@ -96,13 +102,13 @@ class Game {
         }
     }
     
-    private func chooseTarget(fightingCharacter: Character) -> Character {
+    private func chooseTarget(_ fightingCharacter: Character) -> Character {
         let player = fightingCharacter is Priest ? attackingPlayer : targetPlayer
-        return player.selectAllyToHealOrEnemyToAttack(character: fightingCharacter)
+        return player.selectAllyToHealOrEnemyToAttack(fightingCharacter)
     }
     
     private func getsRandomBonus(fightingCharacter: Character) {
-        guard arc4random_uniform(100) <= percentageOfHavingBonus else {
+        guard arc4random_uniform(100) < percentageOfHavingBonus else {
             return
         }
         if fightingCharacter is Warrior, hasAlreadyGotBonus(player: attackingPlayer, weapon: DoubleSwords()) {
@@ -111,7 +117,7 @@ class Game {
             return
         } else if fightingCharacter is Magus, hasAlreadyGotBonus(player: attackingPlayer, weapon: VoidStaff()) {
             return
-        } else if fightingCharacter is Priest, hasAlreadyGotBonus(player: attackingPlayer, weapon: VoidStaff()) {
+        } else if fightingCharacter is Priest, hasAlreadyGotBonus(player: attackingPlayer, weapon: TibetanBowl()) {
             return
         } else {
             bonusCount += 1

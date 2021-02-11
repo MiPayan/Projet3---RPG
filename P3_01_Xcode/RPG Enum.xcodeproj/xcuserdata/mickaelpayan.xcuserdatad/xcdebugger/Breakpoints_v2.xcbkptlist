@@ -7,16 +7,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "274026D3-C447-49FF-82E5-7A181E02547D"
+            uuid = "9883AC5F-FCBC-414E-ABD3-F31464C0D2BC"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "RPG Enum/Player/Player.swift"
+            filePath = "RPG Enum/Game.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "58"
-            endingLineNumber = "58"
-            landmarkName = "selectCharacter()"
+            startingLineNumber = "105"
+            endingLineNumber = "105"
+            landmarkName = "chooseTarget(_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
